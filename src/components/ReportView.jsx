@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Calendar, Download, Server, AlertTriangle, CheckCircle2 } from 'lucide-react';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import ReportChart from './ReportChart';
 
 export default function ReportView({ historyData }) {
   const reportRef = useRef();
@@ -40,13 +41,14 @@ export default function ReportView({ historyData }) {
       
       entry.results.forEach(node => {
         if (!groups[gKey][node.name]) {
-          groups[gKey][node.name] = { up: 0, down: 0, totalLatency: 0, url: node.url || node.ip };
+          groups[gKey][node.name] = { up: 0, down: 0, totalLatency: 0, url: node.url || node.ip, outages: [] };
         }
         if (node.status === 'UP') {
           groups[gKey][node.name].up += 1;
           groups[gKey][node.name].totalLatency += node.responseTime;
         } else {
           groups[gKey][node.name].down += 1;
+          groups[gKey][node.name].outages.push(entry.timestamp);
         }
       });
     });
@@ -64,7 +66,8 @@ export default function ReportView({ historyData }) {
           url: stats.url,
           uptimePercent: parseFloat(uptimePercent),
           downChecks: stats.down,
-          avgLatency
+          avgLatency,
+          outages: stats.outages
         };
       });
       return { period: gKey, nodes };
@@ -103,11 +106,19 @@ export default function ReportView({ historyData }) {
       });
     });
 
-    // Generate the professional vector table
+    // Capture the Chart Canvas securely
+    const chartCanvas = document.querySelector('.report-view-chart canvas');
+    if (chartCanvas) {
+      const imgData = chartCanvas.toDataURL('image/png', 1.0);
+      // Add horizontally below subheader (y=44), Width=180, Height calculated to maintain aspect
+      doc.addImage(imgData, 'PNG', 14, 44, 180, 50);
+    }
+    
+    // Generate the professional vector table lower down
     autoTable(doc, {
       head: [tableColumn],
       body: tableRows,
-      startY: 55,
+      startY: chartCanvas ? 100 : 55, // Push down if graph exists
       theme: 'grid',
       styles: { 
         fontSize: 10,
@@ -139,6 +150,40 @@ export default function ReportView({ historyData }) {
         }
       }
     });
+
+    // --- APPENDIX: DOWNTIME INCIDENTS ---
+    const outageRows = [];
+    reportGroups.forEach(group => {
+      group.nodes.forEach(item => {
+        if (item.outages && item.outages.length > 0) {
+           item.outages.forEach(timestamp => {
+              outageRows.push([
+                item.name,
+                item.url,
+                new Date(timestamp).toLocaleString()
+              ]);
+           });
+        }
+      });
+    });
+
+    if (outageRows.length > 0) {
+      doc.addPage();
+      doc.setFontSize(16);
+      doc.setTextColor(20, 20, 20);
+      doc.text("Appendix A: Outage Timestamps", 14, 22);
+      doc.setFontSize(10);
+      doc.setTextColor(100, 100, 100);
+      doc.text("Detailed log of exact downtime occurences recorded by the NOC Bot.", 14, 28);
+      
+      autoTable(doc, {
+        head: [["Service Node", "URL", "Incident Timestamp (Local Time)"]],
+        body: outageRows,
+        startY: 35,
+        theme: 'striped',
+        headStyles: { fillColor: [220, 38, 38] }, // Red header for outages
+      });
+    }
 
     // Add Pagination Footer
     const pageCount = doc.internal.getNumberOfPages();
@@ -185,6 +230,11 @@ export default function ReportView({ historyData }) {
              <Download size={16} /> Export to PDF
            </button>
         </div>
+      </div>
+      
+      {/* Visual Chart for the Report */}
+      <div className="report-view-chart mb-8 px-4 md:px-0">
+         <ReportChart historyData={historyData} />
       </div>
 
       {reportGroups.length === 0 ? (
