@@ -2,7 +2,9 @@ name: NOC Monitor Check
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    # Explicitly shifted away from the 0/5/10/15 minute global bottlenecks
+    # Running exactly at: 4, 11, 17, 24, 31, 38, 44, 51, 58 minutes past the hour
+    - cron: '4,11,17,24,31,38,44,51,58 * * * *'
   workflow_dispatch:
 
 jobs:
