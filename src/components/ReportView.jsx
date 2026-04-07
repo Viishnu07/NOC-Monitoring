@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Calendar, Download, Server, AlertTriangle, CheckCircle2 } from 'lucide-react';
-import html2pdf from 'html2pdf.js';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 export default function ReportView({ historyData }) {
   const reportRef = useRef();
@@ -73,19 +74,87 @@ export default function ReportView({ historyData }) {
   const reportGroups = processReportData();
 
   const exportPDF = () => {
-    const element = reportRef.current;
-    const opt = {
-      margin:       [0.5, 0.5, 0.5, 0.5],
-      filename:     `NOC_${reportType.toUpperCase()}_Report_${new Date().toISOString().split('T')[0]}.pdf`,
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2, useCORS: true, logging: false, backgroundColor: '#0B0F19' },
-      jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
-    };
+    const doc = new jsPDF();
     
-    element.classList.add('pdf-export-mode');
-    html2pdf().set(opt).from(element).save().then(() => {
-       element.classList.remove('pdf-export-mode');
+    // Document Title and Branding
+    doc.setFontSize(22);
+    doc.setTextColor(20, 20, 20);
+    doc.text("NOC Links Report", 14, 22);
+    
+    // Sub-header and metadata
+    doc.setFontSize(11);
+    doc.setTextColor(100, 100, 100);
+    doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 32);
+    doc.text(`Timeframe: ${reportType === 'weekly' ? 'Weekly' : 'Monthly'} Report`, 14, 38);
+
+    // Prepare Table Data
+    const tableColumn = ["Endpoint / URL", "Health Status", "Uptime %", "Avg Latency"];
+    const tableRows = [];
+
+    reportGroups.forEach(group => {
+      group.nodes.forEach(item => {
+        const healthStatus = item.uptimePercent >= 99.0 ? 'Optimal' : item.uptimePercent >= 95.0 ? 'Warning' : 'Critical';
+        tableRows.push([
+          item.name + '\n' + item.url,
+          healthStatus,
+          `${item.uptimePercent.toFixed(2)}%`,
+          `${Math.round(item.avgLatency)} ms`
+        ]);
+      });
     });
+
+    // Generate the professional vector table
+    doc.autoTable({
+      head: [tableColumn],
+      body: tableRows,
+      startY: 55,
+      theme: 'grid',
+      styles: { 
+        fontSize: 10,
+        cellPadding: 4,
+        font: 'helvetica'
+      },
+      headStyles: { 
+        fillColor: [30, 41, 59],
+        textColor: 255, 
+        fontStyle: 'bold' 
+      },
+      bodyStyles: {
+        textColor: 50,
+      },
+      alternateRowStyles: { 
+        fillColor: [248, 250, 252]
+      },
+      columnStyles: {
+        0: { cellWidth: 'auto', fontStyle: 'bold' },
+        1: { cellWidth: 35 },
+        2: { cellWidth: 30, halign: 'right' },
+        3: { cellWidth: 35, halign: 'right' }
+      },
+      didParseCell: function(data) {
+        if (data.section === 'body' && data.column.index === 1) {
+          if (data.cell.raw === 'Optimal') data.cell.styles.textColor = [22, 163, 74];
+          else if (data.cell.raw === 'Warning') data.cell.styles.textColor = [202, 138, 4];
+          else data.cell.styles.textColor = [220, 38, 38];
+        }
+      }
+    });
+
+    // Add Pagination Footer
+    const pageCount = doc.internal.getNumberOfPages();
+    for(let i = 1; i <= pageCount; i++) {
+      doc.setPage(i);
+      doc.setFontSize(9);
+      doc.setTextColor(150);
+      doc.text(
+        `Page ${i} of ${pageCount}  |  Confidential NOC Report`, 
+        doc.internal.pageSize.width / 2, 
+        doc.internal.pageSize.height - 10, 
+        { align: 'center' }
+      );
+    }
+
+    doc.save(`NOC-Links-Report-${reportType}-${new Date().toISOString().split('T')[0]}.pdf`);
   };
 
   return (
