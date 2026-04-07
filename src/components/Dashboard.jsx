@@ -1,29 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ShieldCheck, ServerCrash, Clock, Download, RefreshCw, Layers, Activity } from 'lucide-react';
-import html2pdf from 'html2pdf.js';
 import StatusCard from './StatusCard';
 import ReportChart from './ReportChart';
 
 export default function Dashboard({ statusData, historyData, loading, lastFetchTime, fetchData }) {
   const dashboardRef = useRef();
-
-  const exportPDF = () => {
-    const element = dashboardRef.current;
-    const opt = {
-      margin:       [0.5, 0.5, 0.5, 0.5],
-      filename:     `NOC_Report_${new Date().toISOString().split('T')[0]}.pdf`,
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2, useCORS: true, logging: false, backgroundColor: '#0B0F19' },
-      jsPDF:        { unit: 'in', format: 'a4', orientation: 'landscape' }
-    };
-    
-    // Add a temporary class to fix some styles for PDF if needed
-    element.classList.add('pdf-export-mode');
-    
-    html2pdf().set(opt).from(element).save().then(() => {
-       element.classList.remove('pdf-export-mode');
-    });
-  };
 
   // Calculate metrics
   const totalNodes = statusData.length;
@@ -73,12 +54,6 @@ export default function Dashboard({ statusData, historyData, loading, lastFetchT
               title="Refresh Data"
             >
               <RefreshCw size={18} className={`text-gray-300 ${loading ? 'animate-spin' : 'group-hover:text-white'}`} />
-            </button>
-            <button 
-              onClick={exportPDF}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-colors shadow-lg shadow-indigo-900/20"
-            >
-              <Download size={16} /> Export Report
             </button>
           </div>
         </header>
