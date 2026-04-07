@@ -41,7 +41,7 @@ export default function ReportView({ historyData }) {
       
       entry.results.forEach(node => {
         if (!groups[gKey][node.name]) {
-          groups[gKey][node.name] = { up: 0, down: 0, totalLatency: 0, url: node.url || node.ip, outages: [] };
+          groups[gKey][node.name] = { up: 0, down: 0, totalLatency: 0, url: node.url || '', ip: node.ip || '', outages: [] };
         }
         if (node.status === 'UP') {
           groups[gKey][node.name].up += 1;
@@ -64,6 +64,7 @@ export default function ReportView({ historyData }) {
         return {
           name: nodeName,
           url: stats.url,
+          ip: stats.ip,
           uptimePercent: parseFloat(uptimePercent),
           downChecks: stats.down,
           avgLatency,
@@ -91,34 +92,66 @@ export default function ReportView({ historyData }) {
     doc.text(`Timeframe: ${reportType === 'weekly' ? 'Weekly' : 'Monthly'} Report`, 14, 38);
 
     // Prepare Table Data
-    const tableColumn = ["Endpoint / URL", "Health Status", "Uptime %", "Avg Latency"];
-    const tableRows = [];
+    const healthRows = [];
+    const summaryRows = [];
 
     reportGroups.forEach(group => {
       group.nodes.forEach(item => {
         const healthStatus = item.uptimePercent >= 99.0 ? 'Optimal' : item.uptimePercent >= 95.0 ? 'Warning' : 'Critical';
-        tableRows.push([
-          item.name + '\n' + item.url,
+        
+        healthRows.push([
+          `${item.name}\n${item.url}\nIP: ${item.ip}`,
           healthStatus,
           `${item.uptimePercent.toFixed(2)}%`,
           `${Math.round(item.avgLatency)} ms`
         ]);
+
+        if (item.downChecks > 0) {
+          summaryRows.push([
+            item.name,
+            item.ip,
+            `${item.downChecks} occurrences`
+          ]);
+        }
       });
     });
 
     // Capture the Chart Canvas securely
     const chartCanvas = document.querySelector('.report-view-chart canvas');
+    let currentY = 55;
     if (chartCanvas) {
       const imgData = chartCanvas.toDataURL('image/png', 1.0);
-      // Add horizontally below subheader (y=44), Width=180, Height calculated to maintain aspect
       doc.addImage(imgData, 'PNG', 14, 44, 180, 50);
+      currentY = 100;
     }
-    
-    // Generate the professional vector table lower down
+
+    // 1. Print Downtime Summary (If exists)
+    if (summaryRows.length > 0) {
+      doc.setFontSize(14);
+      doc.setTextColor(20, 20, 20);
+      doc.text("Downtime Connectivity Summary", 14, currentY);
+      
+      autoTable(doc, {
+        head: [["Service Node", "IP Address", "Failed Ping Intervals (Occurrences)"]],
+        body: summaryRows,
+        startY: currentY + 4,
+        theme: 'striped',
+        styles: { fontSize: 10, cellPadding: 4, font: 'helvetica' },
+        headStyles: { fillColor: [100, 116, 139], textColor: 255, fontStyle: 'bold' } // Slate color
+      });
+      
+      currentY = doc.lastAutoTable.finalY + 15;
+    }
+
+    // 2. Print Main SLA Health Table
+    doc.setFontSize(14);
+    doc.setTextColor(20, 20, 20);
+    doc.text("Overall SLA Health & Latency", 14, currentY);
+
     autoTable(doc, {
-      head: [tableColumn],
-      body: tableRows,
-      startY: chartCanvas ? 100 : 55, // Push down if graph exists
+      head: [["Endpoint / Routing Info", "Health Status", "Uptime %", "Avg Latency"]],
+      body: healthRows,
+      startY: currentY + 4,
       theme: 'grid',
       styles: { 
         fontSize: 10,
@@ -269,6 +302,7 @@ export default function ReportView({ historyData }) {
                             <div>
                               <div className="font-medium text-gray-200">{node.name}</div>
                               <div className="text-xs text-gray-500">{node.url}</div>
+                              {node.ip && <div className="text-[10px] text-gray-600 font-mono mt-0.5">IP: {node.ip}</div>}
                             </div>
                           </div>
                         </td>
