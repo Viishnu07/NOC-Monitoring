@@ -33,6 +33,19 @@ function App() {
     }
   };
 
+  const triggerPushNotification = (title, body) => {
+    if (!("Notification" in window)) return;
+    if (Notification.permission === "granted") {
+      new Notification(title, { body });
+    } else if (Notification.permission !== "denied") {
+      Notification.requestPermission().then(permission => {
+        if (permission === "granted") {
+          new Notification(title, { body });
+        }
+      });
+    }
+  };
+
   const playChime = () => {
     try {
       const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -81,13 +94,17 @@ function App() {
            });
 
            if (newDowns.length > 0) {
-               setCriticalAlert(`CRITICAL ALERT: ${newDowns.map(n => n.name).join(', ')} OFFLINE`);
+               const msg = `${newDowns.map(n => n.name).join(', ')} OFFLINE`;
+               setCriticalAlert(msg);
                setAlertType('down');
                playSiren();
+               triggerPushNotification("🚨 CRITICAL NOC ALERT", msg);
            } else if (newUps.length > 0) {
-               setCriticalAlert(`RECOVERED: ${newUps.map(n => n.name).join(', ')} BACK ONLINE`);
+               const msg = `${newUps.map(n => n.name).join(', ')} BACK ONLINE`;
+               setCriticalAlert(msg);
                setAlertType('up');
                playChime();
+               triggerPushNotification("✅ SYSTEM RECOVERED", msg);
                setTimeout(() => setCriticalAlert(null), 10000); // clear recovery msg after 10s
            }
         }
@@ -118,16 +135,24 @@ function App() {
   return (
     <div className={`min-h-screen relative transition-colors duration-1000 ${criticalAlert && alertType === 'down' ? 'bg-danger/10' : 'bg-background'} selection:bg-success/30`}>
       
-      {/* Alert Banner */}
+      {/* Massive Web Pop-Up Modal */}
       {criticalAlert && (
-        <div className={`fixed top-0 left-0 w-full z-[100] px-4 py-3 flex items-center justify-between text-white font-bold shadow-2xl ${alertType === 'down' ? 'bg-danger animate-pulse' : 'bg-success'}`}>
-          <div className="flex items-center gap-3">
-             <span className="text-xl">⚠️</span>
-             {criticalAlert}
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-md transition-all duration-300">
+          <div className={`p-8 rounded-3xl shadow-2xl max-w-lg w-full mx-4 border mt-[-10vh] ${alertType === 'down' ? 'bg-slate-900 border-danger/50 shadow-danger/20 animate-pulse' : 'bg-slate-900 border-success/50 shadow-success/20'}`}>
+             <div className="flex flex-col items-center text-center gap-4">
+                <span className="text-6xl mb-2">{alertType === 'down' ? '🚨' : '✅'}</span>
+                <h2 className={`text-2xl font-bold tracking-tight ${alertType === 'down' ? 'text-danger' : 'text-success'}`}>
+                  {alertType === 'down' ? 'CRITICAL OUTAGE DETECTED' : 'SYSTEM RECOVERED'}
+                </h2>
+                <p className="text-white text-lg font-medium bg-black/30 w-full py-4 rounded-xl border border-white/10 uppercase tracking-wider">{criticalAlert}</p>
+                <button 
+                  onClick={() => setCriticalAlert(null)} 
+                  className="mt-6 px-8 py-3.5 bg-white/10 hover:bg-white/20 hover:scale-105 active:scale-95 text-white rounded-xl font-bold w-full transition-all"
+                >
+                  Acknowledge & Dismiss
+                </button>
+             </div>
           </div>
-          <button onClick={() => setCriticalAlert(null)} className="px-3 py-1 bg-black/20 hover:bg-black/40 rounded">
-            Dismiss
-          </button>
         </div>
       )}
 
