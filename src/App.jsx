@@ -14,16 +14,26 @@ function App() {
     setLoading(true);
     try {
       const ts = new Date().getTime();
-      const statusRes = await fetch(`/status.json?t=${ts}`);
+      
+      // If we are live on GitHub Pages, read the raw files straight from the repo's main branch!
+      // This saves us from having to rebuild the entire React website every 5 minutes.
+      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      const baseUrl = isLocal 
+        ? '' 
+        : 'https://raw.githubusercontent.com/Viishnu07/NOC-Monitoring/main/public';
+
+      const statusRes = await fetch(`${baseUrl}/status.json?t=${ts}`);
       if (statusRes.ok) {
         const data = await statusRes.json();
         setStatusData(data);
       }
-      const historyRes = await fetch(`/history.json?t=${ts}`);
+      
+      const historyRes = await fetch(`${baseUrl}/history.json?t=${ts}`);
       if (historyRes.ok) {
         const hData = await historyRes.json();
         setHistoryData(hData);
       }
+      
       setLastFetchTime(new Date());
     } catch (err) {
       console.error("Error fetching NOC data", err);
