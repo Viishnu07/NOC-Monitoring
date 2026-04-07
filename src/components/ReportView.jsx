@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Calendar, Download, Server, AlertTriangle, CheckCircle2 } from 'lucide-react';
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 export default function ReportView({ historyData }) {
   const reportRef = useRef();
@@ -104,7 +104,7 @@ export default function ReportView({ historyData }) {
     });
 
     // Generate the professional vector table
-    doc.autoTable({
+    autoTable(doc, {
       head: [tableColumn],
       body: tableRows,
       startY: 55,
