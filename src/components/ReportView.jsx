@@ -12,14 +12,20 @@ export default function ReportView({ historyData }) {
     return <div className="p-8 text-center text-gray-500">No historical data available for reporting.</div>;
   }
 
-  // Helper to group by Week (simplistic: Year-Week based on timestamp)
+  // Helper to group by Week (formatting as Sunday - Saturday)
   const getWeekKey = (date) => {
     const d = new Date(date);
     d.setHours(0, 0, 0, 0);
-    d.setDate(d.getDate() + 3 - (d.getDay() + 6) % 7);
-    const week1 = new Date(d.getFullYear(), 0, 4);
-    const weekNum = 1 + Math.round(((d.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
-    return `${d.getFullYear()}-W${weekNum.toString().padStart(2, '0')}`;
+    const day = d.getDay();
+    const diff = d.getDate() - day; // Adjust to Sunday
+    const sunday = new Date(d);
+    sunday.setDate(diff);
+    
+    const saturday = new Date(sunday);
+    saturday.setDate(sunday.getDate() + 6);
+    
+    const formatDate = (dt) => `${dt.getDate().toString().padStart(2, '0')}/${(dt.getMonth() + 1).toString().padStart(2, '0')}/${dt.getFullYear()}`;
+    return `Week of ${formatDate(sunday)} - ${formatDate(saturday)}`;
   };
 
   // Helper to group by Month
@@ -97,11 +103,11 @@ export default function ReportView({ historyData }) {
 
     reportGroups.forEach(group => {
       group.nodes.forEach(item => {
-        const healthStatus = item.uptimePercent >= 99.0 ? 'Optimal' : item.uptimePercent >= 95.0 ? 'Warning' : 'Critical';
+        const totalDowntimeMins = item.downChecks * 5; // 5 minute intervals
         
         healthRows.push([
           `${item.name}\n${item.url}\nIP: ${item.ip}`,
-          healthStatus,
+          totalDowntimeMins === 0 ? '-' : `${totalDowntimeMins} mins`,
           `${item.uptimePercent.toFixed(2)}%`,
           `${Math.round(item.avgLatency)} ms`
         ]);
@@ -116,14 +122,7 @@ export default function ReportView({ historyData }) {
       });
     });
 
-    // Capture the Chart Canvas securely
-    const chartCanvas = document.querySelector('.report-view-chart canvas');
-    let currentY = 55;
-    if (chartCanvas) {
-      const imgData = chartCanvas.toDataURL('image/png', 1.0);
-      doc.addImage(imgData, 'PNG', 14, 44, 180, 50);
-      currentY = 100;
-    }
+    let currentY = 50;
 
     // 1. Print Downtime Summary (If exists)
     if (summaryRows.length > 0) {
@@ -149,7 +148,7 @@ export default function ReportView({ historyData }) {
     doc.text("Overall SLA Health & Latency", 14, currentY);
 
     autoTable(doc, {
-      head: [["Endpoint / Routing Info", "Health Status", "Uptime %", "Avg Latency"]],
+      head: [["Endpoint / Routing Info", "Total Downtime", "Uptime %", "Avg Latency"]],
       body: healthRows,
       startY: currentY + 4,
       theme: 'grid',
@@ -177,9 +176,7 @@ export default function ReportView({ historyData }) {
       },
       didParseCell: function(data) {
         if (data.section === 'body' && data.column.index === 1) {
-          if (data.cell.raw === 'Optimal') data.cell.styles.textColor = [22, 163, 74];
-          else if (data.cell.raw === 'Warning') data.cell.styles.textColor = [202, 138, 4];
-          else data.cell.styles.textColor = [220, 38, 38];
+          if (data.cell.raw !== '-') data.cell.styles.textColor = [220, 38, 38]; // Red for downtime
         }
       }
     });
@@ -201,18 +198,25 @@ export default function ReportView({ historyData }) {
     });
 
     if (outageRows.length > 0) {
-      doc.addPage();
+      currentY = doc.lastAutoTable.finalY + 20;
+      
+      // Auto-paginate if too close to bottom margin
+      if (currentY > 250) {
+         doc.addPage();
+         currentY = 22;
+      }
+
       doc.setFontSize(16);
       doc.setTextColor(20, 20, 20);
-      doc.text("Appendix A: Outage Timestamps", 14, 22);
+      doc.text("Appendix A: Outage Timestamps", 14, currentY);
       doc.setFontSize(10);
       doc.setTextColor(100, 100, 100);
-      doc.text("Detailed log of exact downtime occurences recorded by the NOC Bot.", 14, 28);
+      doc.text("Detailed log of exact downtime occurences recorded by the NOC Bot.", 14, currentY + 6);
       
       autoTable(doc, {
         head: [["Service Node", "URL", "Incident Timestamp (Local Time)"]],
         body: outageRows,
-        startY: 35,
+        startY: currentY + 13,
         theme: 'striped',
         headStyles: { fillColor: [220, 38, 38] }, // Red header for outages
       });
@@ -287,14 +291,16 @@ export default function ReportView({ historyData }) {
                   <thead>
                     <tr className="bg-card/50 text-xs uppercase tracking-wider text-gray-400 border-b border-border">
                       <th className="px-6 py-4 font-semibold">Service Node</th>
+                      <th className="px-6 py-4 font-semibold">Total Downtime</th>
                       <th className="px-6 py-4 font-semibold">Uptime %</th>
                       <th className="px-6 py-4 font-semibold">Avg Latency</th>
-                      <th className="px-6 py-4 font-semibold">Downtime Events</th>
-                      <th className="px-6 py-4 font-semibold text-right">Status</th>
+                      <th className="px-6 py-4 font-semibold text-right">Failure Events</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
-                    {group.nodes.map((node, i) => (
+                    {group.nodes.map((node, i) => {
+                      const downtimeMins = node.downChecks * 5;
+                      return (
                       <tr key={i} className="hover:bg-white/[0.02] transition-colors">
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
@@ -307,6 +313,11 @@ export default function ReportView({ historyData }) {
                           </div>
                         </td>
                         <td className="px-6 py-4">
+                          <div className={`font-semibold ${downtimeMins > 0 ? 'text-danger' : 'text-gray-500'}`}>
+                            {downtimeMins === 0 ? '-' : `${downtimeMins} mins`}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
                           <span className={`font-bold ${node.uptimePercent >= 99 ? 'text-success' : (node.uptimePercent >= 95 ? 'text-yellow-500' : 'text-danger')}`}>
                             {node.uptimePercent}%
                           </span>
@@ -314,24 +325,14 @@ export default function ReportView({ historyData }) {
                         <td className="px-6 py-4 text-gray-300">
                           {node.avgLatency} <span className="text-xs text-gray-500">ms</span>
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-6 py-4 text-right">
                           <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold ${node.downChecks === 0 ? 'bg-success/10 text-success' : 'bg-danger/20 text-danger'}`}>
-                            {node.downChecks} interval(s)
+                            {node.downChecks} occurrences
                           </span>
                         </td>
-                        <td className="px-6 py-4 text-right">
-                          {node.uptimePercent >= 99 ? (
-                            <div className="flex items-center justify-end gap-1.5 text-success text-sm font-medium">
-                              <CheckCircle2 size={16} /> Healthy
-                            </div>
-                          ) : (
-                            <div className="flex items-center justify-end gap-1.5 text-danger text-sm font-medium">
-                              <AlertTriangle size={16} /> SLA Risk
-                            </div>
-                          )}
-                        </td>
                       </tr>
-                    ))}
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
