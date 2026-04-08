@@ -20,7 +20,7 @@ def check_tcp(ip, port=80, timeout=5):
     start = time.time()
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.settimeout(timeout)
+        sock.settimeout(timeout)        
         result = sock.connect_ex((ip, port))
         sock.close()
         response_time = (time.time() - start) * 1000
@@ -63,14 +63,15 @@ def main():
         url = target.get('url')
         ip = target.get('ip')
         
-        # Check HTTP first
-        is_up, rtt = check_http(url)
-        
-        # Fallback to TCP if HTTP fails and we have an IP
-        if not is_up and ip:
-           # Many ips from excel have spaces or multiple IPs like "203.115.229.88 , 203.115.229.24", sanitize
-           primary_ip = ip.split(',')[0].strip()
-           is_up, rtt = check_tcp(primary_ip)
+        if url:
+            # If a URL is provided, rely strictly on the HTTP check.
+            is_up, rtt = check_http(url)
+        elif ip:
+            # If no URL is provided but we have an IP, perform a TCP check.
+            primary_ip = ip.split(',')[0].strip()
+            is_up, rtt = check_tcp(primary_ip)
+        else:
+            is_up, rtt = False, 0
             
         results.append({
             "name": name,
