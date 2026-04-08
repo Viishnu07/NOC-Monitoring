@@ -1,5 +1,4 @@
 import json
-import socket
 import time
 import requests
 import urllib3
@@ -16,17 +15,6 @@ URLS_FILE = ROOT_DIR / "urls.json"
 STATUS_FILE = PUBLIC_DIR / "status.json"
 HISTORY_FILE = PUBLIC_DIR / "history.json"
 
-def check_tcp(ip, port=80, timeout=5):
-    start = time.time()
-    try:
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.settimeout(timeout)        
-        result = sock.connect_ex((ip, port))
-        sock.close()
-        response_time = (time.time() - start) * 1000
-        return result == 0, response_time
-    except Exception:
-        return False, 0
 
 def check_http(url, timeout=5):
     headers = {
@@ -77,13 +65,10 @@ def main():
         ip = target.get('ip')
         
         if url:
-            # If a URL is provided, rely strictly on the HTTP check.
+            # Strictly check via HTTP/HTTPS only.
             is_up, rtt = check_http(url)
-        elif ip:
-            # If no URL is provided but we have an IP, perform a TCP check.
-            primary_ip = ip.split(',')[0].strip()
-            is_up, rtt = check_tcp(primary_ip)
         else:
+            # No URL defined — cannot check, mark as DOWN.
             is_up, rtt = False, 0
             
         results.append({
