@@ -34,6 +34,13 @@ def check_http(url, timeout=5):
     }
     try:
         response = requests.get(url, timeout=timeout, headers=headers, verify=False, allow_redirects=True)
+        
+        # If it's a 4xx error (often caused by bot protection on big sites like WhatsApp), try a HEAD request
+        if 400 <= response.status_code < 500:
+            head_response = requests.head(url, timeout=timeout, headers=headers, verify=False, allow_redirects=True)
+            if head_response.status_code < 400:
+                response = head_response
+                
         response_time = response.elapsed.total_seconds() * 1000
         return response.status_code < 400, response_time
     except Exception:
@@ -42,6 +49,12 @@ def check_http(url, timeout=5):
             try:
                 https_url = url.replace("http://", "https://", 1)
                 response = requests.get(https_url, timeout=timeout, headers=headers, verify=False, allow_redirects=True)
+                
+                if 400 <= response.status_code < 500:
+                    head_response = requests.head(https_url, timeout=timeout, headers=headers, verify=False, allow_redirects=True)
+                    if head_response.status_code < 400:
+                        response = head_response
+
                 response_time = response.elapsed.total_seconds() * 1000
                 return response.status_code < 400, response_time
             except Exception:
