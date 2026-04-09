@@ -52655,5 +52655,73 @@
         "triageOutput": null
       }
     ]
+  },
+  {
+    "timestamp": "2026-04-09T22:35:14.568490Z",
+    "results": [
+      {
+        "name": "NOC Home",
+        "url": "http://noc.mytechinfra.com",
+        "ip": "142.132.149.97",
+        "status": "UP",
+        "responseTime": 438.79,
+        "timestamp": "2026-04-09T22:35:14.568490Z",
+        "triageOutput": null
+      },
+      {
+        "name": "Fokas Mail",
+        "url": "https://mail.fokasmulia.com.my",
+        "ip": "103.240.177.89",
+        "status": "UP",
+        "responseTime": 795.6,
+        "timestamp": "2026-04-09T22:35:14.568490Z",
+        "triageOutput": null
+      },
+      {
+        "name": "TechInfra Webmail",
+        "url": "https://webmail.mytechinfra.com",
+        "ip": "103.240.177.88",
+        "status": "UP",
+        "responseTime": 958.89,
+        "timestamp": "2026-04-09T22:35:14.568490Z",
+        "triageOutput": null
+      },
+      {
+        "name": "MyEG Webmail",
+        "url": "https://webmail.myeg.com.my",
+        "ip": "103.240.177.90",
+        "status": "UP",
+        "responseTime": 771.41,
+        "timestamp": "2026-04-09T22:35:14.568490Z",
+        "triageOutput": null
+      },
+      {
+        "name": "WhatsApp Web",
+        "url": "https://web.whatsapp.com",
+        "ip": "163.70.132.60",
+        "status": "UP",
+        "responseTime": 164.1,
+        "timestamp": "2026-04-09T22:35:14.568490Z",
+        "triageOutput": null
+      },
+      {
+        "name": "Agent Login",
+        "url": "http://login2agent.pacific-orient.com",
+        "ip": "203.10.20.120",
+        "status": "UP",
+        "responseTime": 1565.91,
+        "timestamp": "2026-04-09T22:35:14.568490Z",
+        "triageOutput": null
+      },
+      {
+        "name": "MyCarInfo",
+        "url": "http://www.mycarinfo.com.my",
+        "ip": "203.115.229.88",
+        "status": "UP",
+        "responseTime": 1003.58,
+        "timestamp": "2026-04-09T22:35:14.568490Z",
+        "triageOutput": null
+      }
+    ]
   }
 ]
