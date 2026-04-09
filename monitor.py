@@ -2,8 +2,11 @@ import json
 import time
 import requests
 import urllib3
+import subprocess
+import platform
 from datetime import datetime
 from pathlib import Path
+from urllib.parse import urlparse
 
 # Suppress InsecureRequestWarning when verify=False is used
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -49,6 +52,34 @@ def check_http(url, timeout=5):
                 return False, 0
         return False, 0
 
+def run_triage(host):
+    # Try mtr first
+    try:
+        result = subprocess.run(["mtr", "--report", "--report-cycles", "5", host], capture_output=True, text=True, timeout=60)
+        if result.returncode == 0 and result.stdout:
+            return result.stdout
+        elif result.stdout:
+            return result.stdout + f"\n(Exit code: {result.returncode})"
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        pass
+    except Exception:
+        pass
+
+    # Fallback to traceroute / tracert
+    try:
+        sys_os = platform.system().lower()
+        if sys_os == "windows":
+            # Windows tracert: -d (no DNS), -h (max hops), -w (timeout ms)
+            cmd = ["tracert", "-d", "-h", "15", "-w", "1000", host]
+        else:
+            cmd = ["traceroute", "-w", "1", host]
+        
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
+        return result.stdout.strip() if result.stdout else "No output from traceroute."
+    except Exception as e:
+        return f"Triage test failed: {str(e)}"
+
+
 def main():
     PUBLIC_DIR.mkdir(exist_ok=True)
     
@@ -71,13 +102,20 @@ def main():
             # No URL defined — cannot check, mark as DOWN.
             is_up, rtt = False, 0
             
+        triage_output = None
+        if not is_up:
+            host_to_check = ip if ip else (urlparse(url).hostname if url else None)
+            if host_to_check:
+                triage_output = run_triage(host_to_check)
+                
         results.append({
             "name": name,
             "url": url,
             "ip": ip,
             "status": "UP" if is_up else "DOWN",
             "responseTime": round(rtt, 2),
-            "timestamp": current_time
+            "timestamp": current_time,
+            "triageOutput": triage_output
         })
         
     with open(STATUS_FILE, 'w') as f:

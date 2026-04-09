@@ -54,7 +54,7 @@ export default function ReportView({ historyData }) {
           groups[gKey][node.name].totalLatency += node.responseTime;
         } else {
           groups[gKey][node.name].down += 1;
-          groups[gKey][node.name].outages.push(entry.timestamp);
+          groups[gKey][node.name].outages.push({ timestamp: entry.timestamp, triageOutput: node.triageOutput });
         }
       });
     });
@@ -183,15 +183,20 @@ export default function ReportView({ historyData }) {
 
     // --- APPENDIX: DOWNTIME INCIDENTS ---
     const outageRows = [];
+    const triageLogs = [];
     reportGroups.forEach(group => {
       group.nodes.forEach(item => {
         if (item.outages && item.outages.length > 0) {
-           item.outages.forEach(timestamp => {
+           item.outages.forEach(outage => {
+              const ts = new Date(outage.timestamp).toLocaleString();
               outageRows.push([
                 item.name,
                 item.url,
-                new Date(timestamp).toLocaleString()
+                ts
               ]);
+              if (outage.triageOutput) {
+                 triageLogs.push({ name: item.name, timestamp: ts, log: outage.triageOutput });
+              }
            });
         }
       });
@@ -220,6 +225,57 @@ export default function ReportView({ historyData }) {
         theme: 'striped',
         headStyles: { fillColor: [220, 38, 38] }, // Red header for outages
       });
+      
+      // Add Triage Logs Appendix
+      if (triageLogs.length > 0) {
+        currentY = doc.lastAutoTable.finalY + 20;
+        if (currentY > 250) {
+           doc.addPage();
+           currentY = 22;
+        }
+        
+        doc.setFontSize(16);
+        doc.setTextColor(20, 20, 20);
+        doc.text("Appendix B: Automated Triage Logs", 14, currentY);
+        doc.setFontSize(10);
+        doc.setTextColor(100, 100, 100);
+        doc.text("MTR / Traceroute outputs captured at the exact moment of failure.", 14, currentY + 6);
+        
+        currentY += 16;
+        
+        triageLogs.forEach(tLog => {
+           if (currentY > 260) {
+              doc.addPage();
+              currentY = 22;
+           }
+           doc.setFontSize(11);
+           doc.setFont('helvetica', 'bold');
+           doc.setTextColor(220, 38, 38); // Red
+           doc.text(`[${tLog.timestamp}] ${tLog.name}`, 14, currentY);
+           
+           currentY += 6;
+           
+           doc.setFont('courier', 'normal');
+           doc.setFontSize(8);
+           doc.setTextColor(40, 40, 40);
+           
+           // Split text to fit page width
+           const splitLog = doc.splitTextToSize(tLog.log, 180);
+           
+           // Check if block fits on page, else add page
+           const logHeight = splitLog.length * 3.5;
+           if (currentY + logHeight > 280) {
+               doc.addPage();
+               currentY = 22;
+           }
+           
+           doc.text(splitLog, 14, currentY);
+           currentY += logHeight + 10;
+           
+           // reset font
+           doc.setFont('helvetica', 'normal');
+        });
+      }
     }
 
     // Add Pagination Footer
