@@ -3,18 +3,18 @@
     "name": "NOC Home",
     "url": "http://noc.mytechinfra.com",
     "ip": "142.132.149.97",
-    "status": "UP",
-    "responseTime": 627.03,
-    "timestamp": "2026-04-10T08:50:18.472519Z",
-    "triageOutput": null
+    "status": "DOWN",
+    "responseTime": 0,
+    "timestamp": "2026-04-10T08:55:16.129009Z",
+    "triageOutput": "Start: 2026-04-10T08:55:16+0000\nHOST: runnervm35a4x               Loss%   Snt   Last   Avg  Best  Wrst StDev\n"
   },
   {
     "name": "Fokas Mail",
     "url": "https://mail.fokasmulia.com.my",
     "ip": "103.240.177.89",
     "status": "UP",
-    "responseTime": 559.28,
-    "timestamp": "2026-04-10T08:50:18.472519Z",
+    "responseTime": 757.71,
+    "timestamp": "2026-04-10T08:55:16.129009Z",
     "triageOutput": null
   },
   {
@@ -22,8 +22,8 @@
     "url": "https://webmail.mytechinfra.com",
     "ip": "103.240.177.88",
     "status": "UP",
-    "responseTime": 775.77,
-    "timestamp": "2026-04-10T08:50:18.472519Z",
+    "responseTime": 1046.34,
+    "timestamp": "2026-04-10T08:55:16.129009Z",
     "triageOutput": null
   },
   {
@@ -31,8 +31,8 @@
     "url": "https://webmail.myeg.com.my",
     "ip": "103.240.177.90",
     "status": "UP",
-    "responseTime": 616.95,
-    "timestamp": "2026-04-10T08:50:18.472519Z",
+    "responseTime": 777.07,
+    "timestamp": "2026-04-10T08:55:16.129009Z",
     "triageOutput": null
   },
   {
@@ -40,26 +40,26 @@
     "url": "https://web.whatsapp.com",
     "ip": "163.70.132.60",
     "status": "UP",
-    "responseTime": 69.07,
-    "timestamp": "2026-04-10T08:50:18.472519Z",
+    "responseTime": 243.83,
+    "timestamp": "2026-04-10T08:55:16.129009Z",
     "triageOutput": null
   },
   {
     "name": "Agent Login",
     "url": "http://login2agent.pacific-orient.com",
     "ip": "203.10.20.120",
-    "status": "UP",
-    "responseTime": 1137.58,
-    "timestamp": "2026-04-10T08:50:18.472519Z",
-    "triageOutput": null
+    "status": "DOWN",
+    "responseTime": 0,
+    "timestamp": "2026-04-10T08:55:16.129009Z",
+    "triageOutput": "Start: 2026-04-10T08:55:41+0000\nHOST: runnervm35a4x               Loss%   Snt   Last   Avg  Best  Wrst StDev\n"
   },
   {
     "name": "MyCarInfo",
     "url": "http://www.mycarinfo.com.my",
     "ip": "203.115.229.88",
     "status": "UP",
-    "responseTime": 746.07,
-    "timestamp": "2026-04-10T08:50:18.472519Z",
+    "responseTime": 996.56,
+    "timestamp": "2026-04-10T08:55:16.129009Z",
     "triageOutput": null
   }
 ]
