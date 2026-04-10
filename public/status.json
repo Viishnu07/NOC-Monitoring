@@ -4,8 +4,8 @@
     "url": "http://noc.mytechinfra.com",
     "ip": "142.132.149.97",
     "status": "UP",
-    "responseTime": 438.57,
-    "timestamp": "2026-04-10T23:30:20.148195Z",
+    "responseTime": 432.44,
+    "timestamp": "2026-04-10T23:35:17.554038Z",
     "triageOutput": null
   },
   {
@@ -13,8 +13,8 @@
     "url": "https://mail.fokasmulia.com.my",
     "ip": "103.240.177.89",
     "status": "UP",
-    "responseTime": 788.17,
-    "timestamp": "2026-04-10T23:30:20.148195Z",
+    "responseTime": 748.35,
+    "timestamp": "2026-04-10T23:35:17.554038Z",
     "triageOutput": null
   },
   {
@@ -22,8 +22,8 @@
     "url": "https://webmail.mytechinfra.com",
     "ip": "103.240.177.88",
     "status": "UP",
-    "responseTime": 1049.15,
-    "timestamp": "2026-04-10T23:30:20.148195Z",
+    "responseTime": 959.96,
+    "timestamp": "2026-04-10T23:35:17.554038Z",
     "triageOutput": null
   },
   {
@@ -31,8 +31,8 @@
     "url": "https://webmail.myeg.com.my",
     "ip": "103.240.177.90",
     "status": "UP",
-    "responseTime": 791.75,
-    "timestamp": "2026-04-10T23:30:20.148195Z",
+    "responseTime": 778.8,
+    "timestamp": "2026-04-10T23:35:17.554038Z",
     "triageOutput": null
   },
   {
@@ -40,8 +40,8 @@
     "url": "https://web.whatsapp.com",
     "ip": "163.70.132.60",
     "status": "UP",
-    "responseTime": 125.38,
-    "timestamp": "2026-04-10T23:30:20.148195Z",
+    "responseTime": 602.11,
+    "timestamp": "2026-04-10T23:35:17.554038Z",
     "triageOutput": null
   },
   {
@@ -49,8 +49,8 @@
     "url": "http://login2agent.pacific-orient.com",
     "ip": "203.10.20.120",
     "status": "UP",
-    "responseTime": 1602.3,
-    "timestamp": "2026-04-10T23:30:20.148195Z",
+    "responseTime": 1397.61,
+    "timestamp": "2026-04-10T23:35:17.554038Z",
     "triageOutput": null
   },
   {
@@ -58,8 +58,8 @@
     "url": "http://www.mycarinfo.com.my",
     "ip": "203.115.229.88",
     "status": "UP",
-    "responseTime": 1013.59,
-    "timestamp": "2026-04-10T23:30:20.148195Z",
+    "responseTime": 1227.14,
+    "timestamp": "2026-04-10T23:35:17.554038Z",
     "triageOutput": null
   }
 ]
