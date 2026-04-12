@@ -103995,5 +103995,73 @@
         "triageOutput": null
       }
     ]
+  },
+  {
+    "timestamp": "2026-04-12T09:15:20.762741Z",
+    "results": [
+      {
+        "name": "NOC Home",
+        "url": "http://noc.mytechinfra.com",
+        "ip": "142.132.149.97",
+        "status": "UP",
+        "responseTime": 497.11,
+        "timestamp": "2026-04-12T09:15:20.762741Z",
+        "triageOutput": null
+      },
+      {
+        "name": "Fokas Mail",
+        "url": "https://mail.fokasmulia.com.my",
+        "ip": "103.240.177.89",
+        "status": "UP",
+        "responseTime": 679.65,
+        "timestamp": "2026-04-12T09:15:20.762741Z",
+        "triageOutput": null
+      },
+      {
+        "name": "TechInfra Webmail",
+        "url": "https://webmail.mytechinfra.com",
+        "ip": "103.240.177.88",
+        "status": "UP",
+        "responseTime": 964.35,
+        "timestamp": "2026-04-12T09:15:20.762741Z",
+        "triageOutput": null
+      },
+      {
+        "name": "MyEG Webmail",
+        "url": "https://webmail.myeg.com.my",
+        "ip": "103.240.177.90",
+        "status": "UP",
+        "responseTime": 704.63,
+        "timestamp": "2026-04-12T09:15:20.762741Z",
+        "triageOutput": null
+      },
+      {
+        "name": "WhatsApp Web",
+        "url": "https://web.whatsapp.com",
+        "ip": "163.70.132.60",
+        "status": "UP",
+        "responseTime": 77.42,
+        "timestamp": "2026-04-12T09:15:20.762741Z",
+        "triageOutput": null
+      },
+      {
+        "name": "Agent Login",
+        "url": "http://login2agent.pacific-orient.com",
+        "ip": "203.10.20.120",
+        "status": "UP",
+        "responseTime": 1283.36,
+        "timestamp": "2026-04-12T09:15:20.762741Z",
+        "triageOutput": null
+      },
+      {
+        "name": "MyCarInfo",
+        "url": "http://www.mycarinfo.com.my",
+        "ip": "203.115.229.88",
+        "status": "UP",
+        "responseTime": 871.04,
+        "timestamp": "2026-04-12T09:15:20.762741Z",
+        "triageOutput": null
+      }
+    ]
   }
 ]
