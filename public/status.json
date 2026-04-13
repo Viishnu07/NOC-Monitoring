@@ -4,8 +4,8 @@
     "url": "http://noc.mytechinfra.com",
     "ip": "142.132.149.97",
     "status": "UP",
-    "responseTime": 397.69,
-    "timestamp": "2026-04-13T01:45:16.415826Z",
+    "responseTime": 438.81,
+    "timestamp": "2026-04-13T02:20:31.928256Z",
     "triageOutput": null
   },
   {
@@ -13,26 +13,26 @@
     "url": "https://mail.fokasmulia.com.my",
     "ip": "103.240.177.89",
     "status": "DOWN",
-    "responseTime": 755.56,
-    "timestamp": "2026-04-13T01:45:16.415826Z",
-    "triageOutput": "1?: [LOCALHOST]                      pmtu 1500\n 1:  no reply\n 2:  no reply\n 3:  no reply\n 4:  no reply\n 5:  no reply\n 6:  no reply\n 7:  no reply\n 8:  no reply\n 9:  no reply\n10:  no reply\n11:  no reply\n12:  no reply\n13:  no reply\n14:  no reply\n15:  no reply\n     Too many hops: pmtu 1500\n     Resume: pmtu 1500"
+    "responseTime": 767.75,
+    "timestamp": "2026-04-13T02:20:31.928256Z",
+    "triageOutput": "traceroute to 103.240.177.89 (103.240.177.89), 15 hops max, 60 byte packets\n 1  * * *\n 2  * * *\n 3  * * *\n 4  * * *\n 5  * * *\n 6  * * *\n 7  * * *\n 8  * * *\n 9  * * *\n10  * * *\n11  * * *\n12  * * *\n13  * * *\n14  * * *\n15  * * *"
   },
   {
     "name": "TechInfra Webmail",
     "url": "https://webmail.mytechinfra.com",
     "ip": "103.240.177.88",
     "status": "DOWN",
-    "responseTime": 975.11,
-    "timestamp": "2026-04-13T01:45:16.415826Z",
-    "triageOutput": "1?: [LOCALHOST]                      pmtu 1500\n 1:  no reply\n 2:  no reply\n 3:  no reply\n 4:  no reply\n 5:  no reply\n 6:  no reply\n 7:  no reply\n 8:  no reply\n 9:  no reply\n10:  no reply\n11:  no reply\n12:  no reply\n13:  no reply\n14:  no reply\n15:  no reply\n     Too many hops: pmtu 1500\n     Resume: pmtu 1500"
+    "responseTime": 959.37,
+    "timestamp": "2026-04-13T02:20:31.928256Z",
+    "triageOutput": "traceroute to 103.240.177.88 (103.240.177.88), 15 hops max, 60 byte packets\n 1  * * *\n 2  * * *\n 3  * * *\n 4  * * *\n 5  * * *\n 6  * * *\n 7  * * *\n 8  * * *\n 9  * * *\n10  * * *\n11  * * *\n12  * * *\n13  * * *\n14  * * *\n15  * * *"
   },
   {
     "name": "MyEG Webmail",
     "url": "https://webmail.myeg.com.my",
     "ip": "103.240.177.90",
     "status": "UP",
-    "responseTime": 783.98,
-    "timestamp": "2026-04-13T01:45:16.415826Z",
+    "responseTime": 782.48,
+    "timestamp": "2026-04-13T02:20:31.928256Z",
     "triageOutput": null
   },
   {
@@ -40,9 +40,9 @@
     "url": "https://web.whatsapp.com",
     "ip": "163.70.132.60",
     "status": "DOWN",
-    "responseTime": 96.55,
-    "timestamp": "2026-04-13T01:45:16.415826Z",
-    "triageOutput": "1?: [LOCALHOST]                      pmtu 1500\n 1:  no reply\n 2:  no reply\n 3:  no reply\n 4:  no reply\n 5:  no reply\n 6:  no reply\n 7:  no reply\n 8:  no reply\n 9:  no reply\n10:  no reply\n11:  no reply\n12:  no reply\n13:  no reply\n14:  no reply\n15:  no reply\n     Too many hops: pmtu 1500\n     Resume: pmtu 1500"
+    "responseTime": 110.62,
+    "timestamp": "2026-04-13T02:20:31.928256Z",
+    "triageOutput": "traceroute to 163.70.132.60 (163.70.132.60), 15 hops max, 60 byte packets\n 1  * * *\n 2  * * *\n 3  * * *\n 4  * * *\n 5  * * *\n 6  * * *\n 7  * * *\n 8  * * *\n 9  * * *\n10  * * *\n11  * * *\n12  * * *\n13  * * *\n14  * * *\n15  * * *"
   },
   {
     "name": "Agent Login",
@@ -50,16 +50,16 @@
     "ip": "203.10.20.120",
     "status": "DOWN",
     "responseTime": 0,
-    "timestamp": "2026-04-13T01:45:16.415826Z",
-    "triageOutput": "1?: [LOCALHOST]                      pmtu 1500\n 1:  no reply\n 2:  no reply\n 3:  no reply\n 4:  no reply\n 5:  no reply\n 6:  no reply\n 7:  no reply\n 8:  no reply\n 9:  no reply\n10:  no reply\n11:  no reply\n12:  no reply\n13:  no reply\n14:  no reply\n15:  no reply\n     Too many hops: pmtu 1500\n     Resume: pmtu 1500"
+    "timestamp": "2026-04-13T02:20:31.928256Z",
+    "triageOutput": "traceroute to 203.10.20.120 (203.10.20.120), 15 hops max, 60 byte packets\n 1  * * *\n 2  * * *\n 3  * * *\n 4  * * *\n 5  * * *\n 6  * * *\n 7  * * *\n 8  * * *\n 9  * * *\n10  * * *\n11  * * *\n12  * * *\n13  * * *\n14  * * *\n15  * * *"
   },
   {
     "name": "MyCarInfo",
     "url": "http://www.mycarinfo.com.my",
     "ip": "203.115.229.88",
     "status": "DOWN",
-    "responseTime": 992.1,
-    "timestamp": "2026-04-13T01:45:16.415826Z",
-    "triageOutput": "1?: [LOCALHOST]                      pmtu 1500\n 1:  no reply\n 2:  no reply\n 3:  no reply\n 4:  no reply\n 5:  no reply\n 6:  no reply\n 7:  no reply\n 8:  no reply\n 9:  no reply\n10:  no reply\n11:  no reply\n12:  no reply\n13:  no reply\n14:  no reply\n15:  no reply\n     Too many hops: pmtu 1500\n     Resume: pmtu 1500"
+    "responseTime": 967.67,
+    "timestamp": "2026-04-13T02:20:31.928256Z",
+    "triageOutput": "traceroute to 203.115.229.88 (203.115.229.88), 15 hops max, 60 byte packets\n 1  * * *\n 2  * * *\n 3  * * *\n 4  * * *\n 5  * * *\n 6  * * *\n 7  * * *\n 8  * * *\n 9  * * *\n10  * * *\n11  * * *\n12  * * *\n13  * * *\n14  * * *\n15  * * *"
   }
 ]
