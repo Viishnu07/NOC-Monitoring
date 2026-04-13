@@ -5,10 +5,10 @@ export default function StatusCard({ item }) {
   const isUp = item.status === 'UP';
   
   return (
-    <div className={`glass-card p-5 relative overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-xl ${isUp ? 'border-success/20 hover:border-success/50' : 'border-danger/40 hover:border-danger/80'}`}>
+    <div className={`glass-card p-5 relative overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-xl ${!isUp ? 'border-danger/40 hover:border-danger/80' : (item.responseTime > 1000 ? 'border-yellow-500/40 hover:border-yellow-500/60' : 'border-success/20 hover:border-success/50')}`}>
       
       {/* Background glow effect based on status */}
-      <div className={`absolute -top-10 -right-10 w-32 h-32 rounded-full blur-3xl opacity-20 ${isUp ? 'bg-success' : 'bg-danger animate-pulse-slow'}`}></div>
+      <div className={`absolute -top-10 -right-10 w-32 h-32 rounded-full blur-3xl opacity-20 ${!isUp ? 'bg-danger animate-pulse-slow' : (item.responseTime > 1000 ? 'bg-yellow-500' : 'bg-success')}`}></div>
       
       <div className="flex justify-between items-start mb-4">
         <div>
@@ -21,9 +21,9 @@ export default function StatusCard({ item }) {
           </p>
         </div>
         
-        <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${isUp ? 'bg-success/10 text-success' : 'bg-danger/20 text-danger animate-pulse'}`}>
-          {isUp ? <CheckCircle2 size={14} /> : <AlertCircle size={14} />}
-          {item.status}
+        <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${!isUp ? 'bg-danger/20 text-danger animate-pulse' : (item.responseTime > 1000 ? 'bg-yellow-500/20 text-yellow-500' : 'bg-success/10 text-success')}`}>
+          {!isUp ? <AlertCircle size={14} /> : (item.responseTime > 1000 ? <Clock size={14} /> : <CheckCircle2 size={14} />)}
+          {!isUp ? 'DOWN' : (item.responseTime > 1000 ? 'SLOW' : 'UP')}
         </div>
       </div>
       

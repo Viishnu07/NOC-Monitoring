@@ -8,10 +8,12 @@ export default function Dashboard({ statusData, historyData, loading, lastFetchT
 
   // Calculate metrics
   const totalNodes = statusData.length;
-  const onlineNodes = statusData.filter(n => n.status === 'UP').length;
+  const onlineNodesData = statusData.filter(n => n.status === 'UP');
+  const onlineNodes = onlineNodesData.length;
   const offlineNodes = totalNodes - onlineNodes;
+  const degradedNodes = onlineNodesData.filter(n => n.responseTime > 1000).length;
   const avgLatency = onlineNodes > 0 
-    ? Math.round(statusData.filter(n => n.status === 'UP').reduce((acc, curr) => acc + curr.responseTime, 0) / onlineNodes) 
+    ? Math.round(onlineNodesData.reduce((acc, curr) => acc + curr.responseTime, 0) / onlineNodes) 
     : 0;
 
   const uptimePercent = totalNodes > 0 ? Math.round((onlineNodes / totalNodes) * 100) : 0;
@@ -82,20 +84,22 @@ export default function Dashboard({ statusData, historyData, loading, lastFetchT
           
           <div className="glass-card p-5 flex items-center justify-between">
             <div>
-              <p className="text-gray-500 text-sm mb-1 uppercase tracking-wider font-semibold">Offline Nodes</p>
-              <h3 className={`text-3xl font-bold ${offlineNodes > 0 ? 'text-danger' : 'text-gray-300'}`}>{offlineNodes}</h3>
+              <p className="text-gray-500 text-sm mb-1 uppercase tracking-wider font-semibold">Degraded Nodes</p>
+              <h3 className={`text-3xl font-bold ${degradedNodes > 0 ? 'text-yellow-500' : 'text-gray-300'}`}>{degradedNodes}</h3>
             </div>
-            <div className="w-10 h-10 rounded-full bg-danger/10 flex items-center justify-center text-danger">
-              <ServerCrash size={20} />
+            <div className="w-10 h-10 rounded-full bg-yellow-500/10 flex items-center justify-center text-yellow-500 text-xs font-bold">
+               SLOW
             </div>
           </div>
           
           <div className="glass-card p-5 flex items-center justify-between">
             <div>
-              <p className="text-gray-500 text-sm mb-1 uppercase tracking-wider font-semibold">Global Latency</p>
-              <h3 className="text-3xl font-bold text-white">{avgLatency} <span className="text-lg text-gray-500">ms</span></h3>
+              <p className="text-gray-500 text-sm mb-1 uppercase tracking-wider font-semibold">Avg Latency</p>
+              <h3 className={`text-3xl font-bold ${avgLatency > 1000 ? 'text-yellow-500' : (avgLatency > 500 ? 'text-orange-400' : 'text-white')}`}>
+                {avgLatency} <span className="text-lg text-gray-500">ms</span>
+              </h3>
             </div>
-            <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center text-purple-400">
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${avgLatency > 500 ? 'bg-orange-500/10 text-orange-400' : 'bg-purple-500/10 text-purple-400'}`}>
               <Activity size={20} />
             </div>
           </div>
@@ -106,6 +110,7 @@ export default function Dashboard({ statusData, historyData, loading, lastFetchT
           <h2 className="text-xl font-semibold text-gray-200">Live Services</h2>
           <div className="flex gap-2">
             <span className="flex items-center gap-1.5 text-xs text-gray-400"><span className="w-2 h-2 rounded-full bg-success"></span> Online</span>
+            <span className="flex items-center gap-1.5 text-xs text-gray-400"><span className="w-2 h-2 rounded-full bg-yellow-500"></span> Degraded</span>
             <span className="flex items-center gap-1.5 text-xs text-gray-400"><span className="w-2 h-2 rounded-full bg-danger"></span> Offline</span>
           </div>
         </div>
