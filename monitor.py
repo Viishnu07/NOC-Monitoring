@@ -78,11 +78,18 @@ def check_http(url, timeout=5):
 def run_triage(host):
     # Try mtr first
     try:
-        result = subprocess.run(["mtr", "--report", "--report-cycles", "5", host], capture_output=True, text=True, timeout=60)
-        if result.returncode == 0 and result.stdout:
-            return result.stdout
-        elif result.stdout:
-            return result.stdout + f"\n(Exit code: {result.returncode})"
+        # Require sudo on Linux for raw UDP/ICMP sockets, otherwise mtr just prints empty headers
+        sys_os = platform.system().lower()
+        mtr_cmd = ["sudo", "mtr", "--report", "--report-cycles", "4", host] if sys_os == "linux" else ["mtr", "--report", "--report-cycles", "4", host]
+        
+        result = subprocess.run(mtr_cmd, capture_output=True, text=True, timeout=60)
+        
+        # MTR output has 2 lines of header. If it has >2 lines, it actually captured hops.
+        if result.stdout and len(result.stdout.strip().split('\n')) > 2:
+            if result.returncode == 0:
+                return result.stdout.strip()
+            else:
+                return result.stdout.strip() + f"\n(Exit code: {result.returncode})"
     except (FileNotFoundError, subprocess.TimeoutExpired):
         pass
     except Exception:
@@ -95,10 +102,21 @@ def run_triage(host):
             # Windows tracert: -d (no DNS), -h (max hops), -w (timeout ms)
             cmd = ["tracert", "-d", "-h", "15", "-w", "1000", host]
         else:
-            cmd = ["traceroute", "-w", "1", host]
+            # Use sudo traceroute (or tracepath if traceroute is missing)
+            cmd = ["sudo", "traceroute", "-w", "2", "-m", "15", host]
         
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
-        return result.stdout.strip() if result.stdout else "No output from traceroute."
+        
+        if result.stdout and len(result.stdout.strip().split('\n')) > 1:
+            return result.stdout.strip()
+        else:
+            # If standard traceroute command fails, try tracepath which doesn't need root
+            if sys_os != "windows":
+                alt_cmd = ["tracepath", "-m", "15", host]
+                alt_result = subprocess.run(alt_cmd, capture_output=True, text=True, timeout=60)
+                if alt_result.stdout:
+                    return alt_result.stdout.strip()
+            return f"No output from traceroute/mtr.\nStderr: {result.stderr.strip()}"
     except Exception as e:
         return f"Triage test failed: {str(e)}"
 
