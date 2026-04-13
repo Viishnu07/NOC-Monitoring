@@ -79,8 +79,9 @@ def run_triage(host):
     # Try mtr first
     try:
         # Require sudo on Linux for raw UDP/ICMP sockets, otherwise mtr just prints empty headers
+        # NOTE: GitHub Actions (Azure) blocks ICMP/UDP tracing. We MUST use TCP on Port 443 to bypass the firewall!
         sys_os = platform.system().lower()
-        mtr_cmd = ["sudo", "mtr", "--report", "--report-cycles", "4", host] if sys_os == "linux" else ["mtr", "--report", "--report-cycles", "4", host]
+        mtr_cmd = ["sudo", "mtr", "--tcp", "--port", "443", "--report", "--report-cycles", "4", host] if sys_os == "linux" else ["mtr", "--tcp", "--port", "443", "--report", "--report-cycles", "4", host]
         
         result = subprocess.run(mtr_cmd, capture_output=True, text=True, timeout=60)
         
@@ -102,15 +103,15 @@ def run_triage(host):
             # Windows tracert: -d (no DNS), -h (max hops), -w (timeout ms)
             cmd = ["tracert", "-d", "-h", "15", "-w", "1000", host]
         else:
-            # Use sudo traceroute (or tracepath if traceroute is missing)
-            cmd = ["sudo", "traceroute", "-w", "2", "-m", "15", host]
+            # Use sudo traceroute with TCP (-T) on port 443 (-p) to bypass firewall blocks
+            cmd = ["sudo", "traceroute", "-T", "-p", "443", "-w", "2", "-m", "15", host]
         
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
         
         if result.stdout and len(result.stdout.strip().split('\n')) > 1:
             return result.stdout.strip()
         else:
-            # If standard traceroute command fails, try tracepath which doesn't need root
+            # If standard traceroute command fails, try tracepath which doesn't need root (but usually fails on GitHub Actions)
             if sys_os != "windows":
                 alt_cmd = ["tracepath", "-m", "15", host]
                 alt_result = subprocess.run(alt_cmd, capture_output=True, text=True, timeout=60)
