@@ -7,6 +7,7 @@ import ReportChart from './ReportChart';
 export default function ReportView({ historyData }) {
   const reportRef = useRef();
   const [reportType, setReportType] = useState('weekly');
+  const [selectedPeriod, setSelectedPeriod] = useState('All');
 
   if (!historyData || historyData.length === 0) {
     return <div className="p-8 text-center text-gray-500">No historical data available for reporting.</div>;
@@ -81,7 +82,11 @@ export default function ReportView({ historyData }) {
     });
   };
 
-  const reportGroups = processReportData();
+  const allGroups = processReportData();
+  const availablePeriods = ['All', ...allGroups.map(g => g.period)];
+  const reportGroups = selectedPeriod === 'All' 
+    ? allGroups 
+    : allGroups.filter(g => g.period === selectedPeriod);
 
   const exportPDF = () => {
     const doc = new jsPDF();
@@ -259,8 +264,9 @@ export default function ReportView({ historyData }) {
            doc.setFontSize(8);
            doc.setTextColor(40, 40, 40);
            
-           // Split text to fit page width
-           const splitLog = doc.splitTextToSize(tLog.log, 180);
+           // Split text to fit page width, respecting newlines
+           const rawLines = (tLog.log || "").split('\n');
+           const splitLog = doc.splitTextToSize(rawLines, 180);
            
            // Check if block fits on page, else add page
            const logHeight = splitLog.length * 3.5;
@@ -309,11 +315,21 @@ export default function ReportView({ historyData }) {
         <div className="flex gap-3 items-center" data-html2canvas-ignore>
            <select 
              value={reportType} 
-             onChange={(e) => setReportType(e.target.value)}
+             onChange={(e) => { setReportType(e.target.value); setSelectedPeriod('All'); }}
              className="bg-card text-white border border-border rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-blue-500"
            >
              <option value="weekly">Weekly Report</option>
              <option value="monthly">Monthly Report</option>
+           </select>
+
+           <select 
+             value={selectedPeriod} 
+             onChange={(e) => setSelectedPeriod(e.target.value)}
+             className="bg-card text-white border border-border rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-blue-500"
+           >
+             {availablePeriods.map(period => (
+               <option key={period} value={period}>{period === 'All' ? 'All Periods' : period}</option>
+             ))}
            </select>
            
            <button 
@@ -394,6 +410,34 @@ export default function ReportView({ historyData }) {
               </div>
             </div>
           ))}
+
+          {/* Show Triage/MTR Logs in the UI as well */}
+          {reportGroups.some(g => g.nodes.some(n => n.outages.some(o => o.triageOutput))) && (
+            <div className="glass-card mt-8 overflow-hidden">
+               <div className="bg-border/50 px-6 py-4 border-b border-border flex items-center gap-2">
+                 <AlertTriangle size={20} className="text-danger" />
+                 <h2 className="text-xl font-bold text-white uppercase tracking-wider">
+                   Automated Triage Details (MTR Logs)
+                 </h2>
+               </div>
+               <div className="p-6 space-y-6 max-h-[800px] overflow-y-auto">
+                  {reportGroups.map(group => 
+                     group.nodes.map(node => 
+                        node.outages.filter(o => o.triageOutput).map((outage, idx) => (
+                           <div key={`${group.period}-${node.name}-${idx}`} className="bg-black/30 rounded-lg p-4 border border-white/5">
+                              <div className="text-danger font-bold mb-2 text-sm">
+                                [{new Date(outage.timestamp).toLocaleString()}] {node.name}
+                              </div>
+                              <pre className="text-[10px] sm:text-xs text-gray-300 font-mono whitespace-pre-wrap overflow-x-auto">
+                                {outage.triageOutput}
+                              </pre>
+                           </div>
+                        ))
+                     )
+                  )}
+               </div>
+            </div>
+          )}
         </div>
       )}
     </div>
