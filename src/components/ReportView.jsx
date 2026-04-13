@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Calendar, Download, Server, AlertTriangle, CheckCircle2 } from 'lucide-react';
+import { Calendar, Download, Server } from 'lucide-react';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import ReportChart from './ReportChart';
@@ -352,6 +352,8 @@ export default function ReportView({ historyData }) {
                   </tbody>
                 </table>
               </div>
+            </div>
+          ))}
         </div>
       )}
     </div>
