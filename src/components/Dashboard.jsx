@@ -1,14 +1,28 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ShieldCheck, ServerCrash, Clock, Download, RefreshCw, Layers, Activity } from 'lucide-react';
+import { ShieldCheck, ServerCrash, Clock, Download, RefreshCw, Layers, Activity, History } from 'lucide-react';
 import StatusCard from './StatusCard';
 import ReportChart from './ReportChart';
+import ReplayMode from './ReplayMode';
 
 export default function Dashboard({ statusData, historyData, loading, lastFetchTime, fetchData }) {
   const dashboardRef = useRef();
+  const [isReplayMode, setIsReplayMode] = useState(false);
+  const [replaySnapshot, setReplaySnapshot] = useState([]);
+
+  // When replay mode is toggled ON, start at the latest entry
+  const enterReplay = () => {
+    if (historyData.length === 0) return;
+    setReplaySnapshot(historyData[historyData.length - 1].results);
+    setIsReplayMode(true);
+  };
+  const exitReplay = () => setIsReplayMode(false);
+
+  // The data the cards display: historical snapshot when replaying, live otherwise
+  const displayData = isReplayMode ? replaySnapshot : statusData;
 
   // Calculate metrics
-  const totalNodes = statusData.length;
-  const onlineNodesData = statusData.filter(n => n.status === 'UP');
+  const totalNodes = displayData.length;
+  const onlineNodesData = displayData.filter(n => n.status === 'UP');
   const onlineNodes = onlineNodesData.length;
   const offlineNodes = totalNodes - onlineNodes;
   const degradedNodes = onlineNodesData.filter(n => n.responseTime > 1000).length;
@@ -45,14 +59,33 @@ export default function Dashboard({ statusData, historyData, loading, lastFetchT
           </div>
           
           <div className="flex items-center gap-3">
+            {isReplayMode && (
+              <div className="flex items-center gap-2 bg-orange-500/10 border border-orange-500/30 px-3 py-1.5 rounded-full">
+                <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse"></span>
+                <span className="text-orange-400 text-xs font-bold tracking-widest">REPLAY</span>
+              </div>
+            )}
             <div className="text-xs text-gray-500 mr-2 flex items-center gap-2">
               <Clock size={14} />
               Last Updated: {lastFetchTime ? lastFetchTime.toLocaleTimeString() : '...'}
             </div>
-            <button 
-              onClick={fetchData} 
-              disabled={loading}
-              className="p-2 rounded-lg bg-card border border-border hover:bg-border transition-colors group"
+            {historyData.length > 0 && (
+              <button
+                onClick={isReplayMode ? exitReplay : enterReplay}
+                className={`p-2 rounded-lg border transition-colors group ${
+                  isReplayMode
+                    ? 'bg-orange-500/20 border-orange-500/40 text-orange-400 hover:bg-orange-500/30'
+                    : 'bg-card border-border hover:bg-border text-gray-400 hover:text-white'
+                }`}
+                title={isReplayMode ? 'Exit Replay Mode' : 'Enter Replay Mode'}
+              >
+                <History size={18} />
+              </button>
+            )}
+            <button
+              onClick={fetchData}
+              disabled={loading || isReplayMode}
+              className="p-2 rounded-lg bg-card border border-border hover:bg-border transition-colors group disabled:opacity-40 disabled:cursor-not-allowed"
               title="Refresh Data"
             >
               <RefreshCw size={18} className={`text-gray-300 ${loading ? 'animate-spin' : 'group-hover:text-white'}`} />
@@ -140,11 +173,20 @@ export default function Dashboard({ statusData, historyData, loading, lastFetchT
             <p className="text-gray-400">{loading ? "Loading telemetry..." : "No targets found in status.json. Make sure the python monitor has run."}</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-10">
-            {statusData.map((item, index) => (
+          <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-10 ${isReplayMode ? 'opacity-90' : ''}`}>
+            {displayData.map((item, index) => (
               <StatusCard key={index} item={item} />
             ))}
           </div>
+        )}
+
+        {/* Replay Mode Scrubber Panel */}
+        {isReplayMode && historyData.length > 0 && (
+          <ReplayMode
+            historyData={historyData}
+            onReplayFrame={(snapshot) => setReplaySnapshot(snapshot)}
+            onExit={exitReplay}
+          />
         )}
 
         {/* Analytics Section */}
