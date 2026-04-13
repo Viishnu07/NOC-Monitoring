@@ -55,7 +55,7 @@ export default function ReportView({ historyData }) {
           groups[gKey][node.name].totalLatency += node.responseTime;
         } else {
           groups[gKey][node.name].down += 1;
-          groups[gKey][node.name].outages.push({ timestamp: entry.timestamp, triageOutput: node.triageOutput });
+          groups[gKey][node.name].outages.push({ timestamp: entry.timestamp });
         }
       });
     });
@@ -188,7 +188,6 @@ export default function ReportView({ historyData }) {
 
     // --- APPENDIX: DOWNTIME INCIDENTS ---
     const outageRows = [];
-    const triageLogs = [];
     reportGroups.forEach(group => {
       group.nodes.forEach(item => {
         if (item.outages && item.outages.length > 0) {
@@ -199,9 +198,6 @@ export default function ReportView({ historyData }) {
                 item.url,
                 ts
               ]);
-              if (outage.triageOutput) {
-                 triageLogs.push({ name: item.name, timestamp: ts, log: outage.triageOutput });
-              }
            });
         }
       });
@@ -230,58 +226,6 @@ export default function ReportView({ historyData }) {
         theme: 'striped',
         headStyles: { fillColor: [220, 38, 38] }, // Red header for outages
       });
-      
-      // Add Triage Logs Appendix
-      if (triageLogs.length > 0) {
-        currentY = doc.lastAutoTable.finalY + 20;
-        if (currentY > 250) {
-           doc.addPage();
-           currentY = 22;
-        }
-        
-        doc.setFontSize(16);
-        doc.setTextColor(20, 20, 20);
-        doc.text("Appendix B: Automated Triage Logs", 14, currentY);
-        doc.setFontSize(10);
-        doc.setTextColor(100, 100, 100);
-        doc.text("MTR / Traceroute outputs captured at the exact moment of failure.", 14, currentY + 6);
-        
-        currentY += 16;
-        
-        triageLogs.forEach(tLog => {
-           if (currentY > 260) {
-              doc.addPage();
-              currentY = 22;
-           }
-           doc.setFontSize(11);
-           doc.setFont('helvetica', 'bold');
-           doc.setTextColor(220, 38, 38); // Red
-           doc.text(`[${tLog.timestamp}] ${tLog.name}`, 14, currentY);
-           
-           currentY += 6;
-           
-           doc.setFont('courier', 'normal');
-           doc.setFontSize(8);
-           doc.setTextColor(40, 40, 40);
-           
-           // Split text to fit page width, respecting newlines
-           const rawLines = (tLog.log || "").split('\n');
-           const splitLog = doc.splitTextToSize(rawLines, 180);
-           
-           // Check if block fits on page, else add page
-           const logHeight = splitLog.length * 3.5;
-           if (currentY + logHeight > 280) {
-               doc.addPage();
-               currentY = 22;
-           }
-           
-           doc.text(splitLog, 14, currentY);
-           currentY += logHeight + 10;
-           
-           // reset font
-           doc.setFont('helvetica', 'normal');
-        });
-      }
     }
 
     // Add Pagination Footer
@@ -408,36 +352,6 @@ export default function ReportView({ historyData }) {
                   </tbody>
                 </table>
               </div>
-            </div>
-          ))}
-
-          {/* Show Triage/MTR Logs in the UI as well */}
-          {reportGroups.some(g => g.nodes.some(n => n.outages.some(o => o.triageOutput))) && (
-            <div className="glass-card mt-8 overflow-hidden">
-               <div className="bg-border/50 px-6 py-4 border-b border-border flex items-center gap-2">
-                 <AlertTriangle size={20} className="text-danger" />
-                 <h2 className="text-xl font-bold text-white uppercase tracking-wider">
-                   Automated Triage Details (MTR Logs)
-                 </h2>
-               </div>
-               <div className="p-6 space-y-6 max-h-[800px] overflow-y-auto">
-                  {reportGroups.map(group => 
-                     group.nodes.map(node => 
-                        node.outages.filter(o => o.triageOutput).map((outage, idx) => (
-                           <div key={`${group.period}-${node.name}-${idx}`} className="bg-black/30 rounded-lg p-4 border border-white/5">
-                              <div className="text-danger font-bold mb-2 text-sm">
-                                [{new Date(outage.timestamp).toLocaleString()}] {node.name}
-                              </div>
-                              <pre className="text-[10px] sm:text-xs text-gray-300 font-mono whitespace-pre-wrap overflow-x-auto">
-                                {outage.triageOutput}
-                              </pre>
-                           </div>
-                        ))
-                     )
-                  )}
-               </div>
-            </div>
-          )}
         </div>
       )}
     </div>

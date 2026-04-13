@@ -2,8 +2,6 @@ import json
 import time
 import requests
 import urllib3
-import subprocess
-import platform
 from datetime import datetime
 from pathlib import Path
 from urllib.parse import urlparse
@@ -71,51 +69,6 @@ def check_http(url, timeout=15):
         # If the specific URL defined in JSON fails, it is DOWN.
         return False, 0
 
-def run_triage(host):
-    # Try mtr first
-    try:
-        # Require sudo on Linux for raw UDP/ICMP sockets, otherwise mtr just prints empty headers
-        # NOTE: GitHub Actions (Azure) blocks ICMP/UDP tracing. We MUST use TCP on Port 443 to bypass the firewall!
-        sys_os = platform.system().lower()
-        mtr_cmd = ["sudo", "mtr", "--tcp", "--port", "443", "--report", "--report-cycles", "4", host] if sys_os == "linux" else ["mtr", "--tcp", "--port", "443", "--report", "--report-cycles", "4", host]
-        
-        result = subprocess.run(mtr_cmd, capture_output=True, text=True, timeout=60)
-        
-        # MTR output has 2 lines of header. If it has >2 lines, it actually captured hops.
-        if result.stdout and len(result.stdout.strip().split('\n')) > 2:
-            if result.returncode == 0:
-                return result.stdout.strip()
-            else:
-                return result.stdout.strip() + f"\n(Exit code: {result.returncode})"
-    except (FileNotFoundError, subprocess.TimeoutExpired):
-        pass
-    except Exception:
-        pass
-
-    # Fallback to traceroute / tracert
-    try:
-        sys_os = platform.system().lower()
-        if sys_os == "windows":
-            # Windows tracert: -d (no DNS), -h (max hops), -w (timeout ms)
-            cmd = ["tracert", "-d", "-h", "15", "-w", "1000", host]
-        else:
-            # Use sudo traceroute with TCP (-T) on port 443 (-p) to bypass firewall blocks
-            cmd = ["sudo", "traceroute", "-T", "-p", "443", "-w", "2", "-m", "15", host]
-        
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
-        
-        if result.stdout and len(result.stdout.strip().split('\n')) > 1:
-            return result.stdout.strip()
-        else:
-            # If standard traceroute command fails, try tracepath which doesn't need root (but usually fails on GitHub Actions)
-            if sys_os != "windows":
-                alt_cmd = ["tracepath", "-m", "15", host]
-                alt_result = subprocess.run(alt_cmd, capture_output=True, text=True, timeout=60)
-                if alt_result.stdout:
-                    return alt_result.stdout.strip()
-            return f"No output from traceroute/mtr.\nStderr: {result.stderr.strip()}"
-    except Exception as e:
-        return f"Triage test failed: {str(e)}"
 
 
 def main():
@@ -140,20 +93,13 @@ def main():
             # No URL defined — cannot check, mark as DOWN.
             is_up, rtt = False, 0
             
-        triage_output = None
-        if not is_up:
-            host_to_check = ip if ip else (urlparse(url).hostname if url else None)
-            if host_to_check:
-                triage_output = run_triage(host_to_check)
-                
         results.append({
             "name": name,
             "url": url,
             "ip": ip,
             "status": "UP" if is_up else "DOWN",
             "responseTime": round(rtt, 2),
-            "timestamp": current_time,
-            "triageOutput": triage_output
+            "timestamp": current_time
         })
         
     with open(STATUS_FILE, 'w') as f:
