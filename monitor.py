@@ -40,18 +40,14 @@ def check_http(url, timeout=15):
         response_time = response.elapsed.total_seconds() * 1000
         
         # 1. Check Status Code
-        if response.status_code >= 400:
-            # Stricter than Excel: Any 4xx/5xx is DOWN
-            # Exception: Some sites block GET but allow HEAD (like WhatsApp Web sometimes)
-            head_response = session.head(url, timeout=timeout, headers=headers, verify=False, allow_redirects=True)
-            if head_response.status_code < 400:
-                return True, head_response.elapsed.total_seconds() * 1000
+        # We consider 400, 401, 403 as UP because the server is actively responding.
+        if response.status_code >= 500:
             return False, response_time
 
-        # 2. Check Content Size (ISP Splash pages are usually very light < 500 bytes)
+        # 2. Check Content Size (ISP Splash pages are usually very light)
+        # Exception: Webmail sites often return a simple <meta refresh> which can be around 70-100 bytes.
         content_len = len(response.text)
-        if content_len < 500:
-             # Heuristic: Real web pages are rarely this small.
+        if content_len < 50 and "refresh" not in response.text.lower():
              return False, response_time
 
         # 3. Check for Maintenance Keywords
