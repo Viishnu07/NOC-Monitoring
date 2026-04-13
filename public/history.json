@@ -118547,5 +118547,73 @@
         "triageOutput": "Start: 2026-04-13T01:31:23+0000\nHOST: runnervm35a4x               Loss%   Snt   Last   Avg  Best  Wrst StDev\n"
       }
     ]
+  },
+  {
+    "timestamp": "2026-04-13T01:35:18.441151Z",
+    "results": [
+      {
+        "name": "NOC Home",
+        "url": "http://noc.mytechinfra.com",
+        "ip": "142.132.149.97",
+        "status": "UP",
+        "responseTime": 542.55,
+        "timestamp": "2026-04-13T01:35:18.441151Z",
+        "triageOutput": null
+      },
+      {
+        "name": "Fokas Mail",
+        "url": "https://mail.fokasmulia.com.my",
+        "ip": "103.240.177.89",
+        "status": "DOWN",
+        "responseTime": 634.39,
+        "timestamp": "2026-04-13T01:35:18.441151Z",
+        "triageOutput": "1?: [LOCALHOST]                      pmtu 1500\n 1:  no reply\n 2:  no reply\n 3:  no reply\n 4:  no reply\n 5:  no reply\n 6:  no reply\n 7:  no reply\n 8:  no reply\n 9:  no reply\n10:  no reply\n11:  no reply\n12:  no reply\n13:  no reply\n14:  no reply\n15:  no reply\n     Too many hops: pmtu 1500\n     Resume: pmtu 1500"
+      },
+      {
+        "name": "TechInfra Webmail",
+        "url": "https://webmail.mytechinfra.com",
+        "ip": "103.240.177.88",
+        "status": "DOWN",
+        "responseTime": 887.15,
+        "timestamp": "2026-04-13T01:35:18.441151Z",
+        "triageOutput": "1?: [LOCALHOST]                      pmtu 1500\n 1:  no reply\n 2:  no reply\n 3:  no reply\n 4:  no reply\n 5:  no reply\n 6:  no reply\n 7:  no reply\n 8:  no reply\n 9:  no reply\n10:  no reply\n11:  no reply\n12:  no reply\n13:  no reply\n14:  no reply\n15:  no reply\n     Too many hops: pmtu 1500\n     Resume: pmtu 1500"
+      },
+      {
+        "name": "MyEG Webmail",
+        "url": "https://webmail.myeg.com.my",
+        "ip": "103.240.177.90",
+        "status": "UP",
+        "responseTime": 1011.07,
+        "timestamp": "2026-04-13T01:35:18.441151Z",
+        "triageOutput": null
+      },
+      {
+        "name": "WhatsApp Web",
+        "url": "https://web.whatsapp.com",
+        "ip": "163.70.132.60",
+        "status": "DOWN",
+        "responseTime": 204.06,
+        "timestamp": "2026-04-13T01:35:18.441151Z",
+        "triageOutput": "1?: [LOCALHOST]                      pmtu 1500\n 1:  no reply\n 2:  no reply\n 3:  no reply\n 4:  no reply\n 5:  no reply\n 6:  no reply\n 7:  no reply\n 8:  no reply\n 9:  no reply\n10:  no reply\n11:  no reply\n12:  no reply\n13:  no reply\n14:  no reply\n15:  no reply\n     Too many hops: pmtu 1500\n     Resume: pmtu 1500"
+      },
+      {
+        "name": "Agent Login",
+        "url": "http://login2agent.pacific-orient.com",
+        "ip": "203.10.20.120",
+        "status": "DOWN",
+        "responseTime": 0,
+        "timestamp": "2026-04-13T01:35:18.441151Z",
+        "triageOutput": "1?: [LOCALHOST]                      pmtu 1500\n 1:  no reply\n 2:  no reply\n 3:  no reply\n 4:  no reply\n 5:  no reply\n 6:  no reply\n 7:  no reply\n 8:  no reply\n 9:  no reply\n10:  no reply\n11:  no reply\n12:  no reply\n13:  no reply\n14:  no reply\n15:  no reply\n     Too many hops: pmtu 1500\n     Resume: pmtu 1500"
+      },
+      {
+        "name": "MyCarInfo",
+        "url": "http://www.mycarinfo.com.my",
+        "ip": "203.115.229.88",
+        "status": "DOWN",
+        "responseTime": 813.83,
+        "timestamp": "2026-04-13T01:35:18.441151Z",
+        "triageOutput": "1?: [LOCALHOST]                      pmtu 1500\n 1:  no reply\n 2:  no reply\n 3:  no reply\n 4:  no reply\n 5:  no reply\n 6:  no reply\n 7:  no reply\n 8:  no reply\n 9:  no reply\n10:  no reply\n11:  no reply\n12:  no reply\n13:  no reply\n14:  no reply\n15:  no reply\n     Too many hops: pmtu 1500\n     Resume: pmtu 1500"
+      }
+    ]
   }
 ]
