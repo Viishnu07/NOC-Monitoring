@@ -4,8 +4,8 @@
     "url": "http://noc.mytechinfra.com",
     "ip": "142.132.149.97",
     "status": "UP",
-    "responseTime": 549.54,
-    "timestamp": "2026-04-13T02:15:29.854429Z",
+    "responseTime": 438.81,
+    "timestamp": "2026-04-13T02:20:31.928256Z",
     "triageOutput": null
   },
   {
@@ -13,8 +13,8 @@
     "url": "https://mail.fokasmulia.com.my",
     "ip": "103.240.177.89",
     "status": "DOWN",
-    "responseTime": 660.35,
-    "timestamp": "2026-04-13T02:15:29.854429Z",
+    "responseTime": 767.75,
+    "timestamp": "2026-04-13T02:20:31.928256Z",
     "triageOutput": "traceroute to 103.240.177.89 (103.240.177.89), 15 hops max, 60 byte packets\n 1  * * *\n 2  * * *\n 3  * * *\n 4  * * *\n 5  * * *\n 6  * * *\n 7  * * *\n 8  * * *\n 9  * * *\n10  * * *\n11  * * *\n12  * * *\n13  * * *\n14  * * *\n15  * * *"
   },
   {
@@ -22,8 +22,8 @@
     "url": "https://webmail.mytechinfra.com",
     "ip": "103.240.177.88",
     "status": "DOWN",
-    "responseTime": 835.35,
-    "timestamp": "2026-04-13T02:15:29.854429Z",
+    "responseTime": 959.37,
+    "timestamp": "2026-04-13T02:20:31.928256Z",
     "triageOutput": "traceroute to 103.240.177.88 (103.240.177.88), 15 hops max, 60 byte packets\n 1  * * *\n 2  * * *\n 3  * * *\n 4  * * *\n 5  * * *\n 6  * * *\n 7  * * *\n 8  * * *\n 9  * * *\n10  * * *\n11  * * *\n12  * * *\n13  * * *\n14  * * *\n15  * * *"
   },
   {
@@ -31,8 +31,8 @@
     "url": "https://webmail.myeg.com.my",
     "ip": "103.240.177.90",
     "status": "UP",
-    "responseTime": 659.56,
-    "timestamp": "2026-04-13T02:15:29.854429Z",
+    "responseTime": 782.48,
+    "timestamp": "2026-04-13T02:20:31.928256Z",
     "triageOutput": null
   },
   {
@@ -40,8 +40,8 @@
     "url": "https://web.whatsapp.com",
     "ip": "163.70.132.60",
     "status": "DOWN",
-    "responseTime": 383.05,
-    "timestamp": "2026-04-13T02:15:29.854429Z",
+    "responseTime": 110.62,
+    "timestamp": "2026-04-13T02:20:31.928256Z",
     "triageOutput": "traceroute to 163.70.132.60 (163.70.132.60), 15 hops max, 60 byte packets\n 1  * * *\n 2  * * *\n 3  * * *\n 4  * * *\n 5  * * *\n 6  * * *\n 7  * * *\n 8  * * *\n 9  * * *\n10  * * *\n11  * * *\n12  * * *\n13  * * *\n14  * * *\n15  * * *"
   },
   {
@@ -50,7 +50,7 @@
     "ip": "203.10.20.120",
     "status": "DOWN",
     "responseTime": 0,
-    "timestamp": "2026-04-13T02:15:29.854429Z",
+    "timestamp": "2026-04-13T02:20:31.928256Z",
     "triageOutput": "traceroute to 203.10.20.120 (203.10.20.120), 15 hops max, 60 byte packets\n 1  * * *\n 2  * * *\n 3  * * *\n 4  * * *\n 5  * * *\n 6  * * *\n 7  * * *\n 8  * * *\n 9  * * *\n10  * * *\n11  * * *\n12  * * *\n13  * * *\n14  * * *\n15  * * *"
   },
   {
@@ -58,8 +58,8 @@
     "url": "http://www.mycarinfo.com.my",
     "ip": "203.115.229.88",
     "status": "DOWN",
-    "responseTime": 880.07,
-    "timestamp": "2026-04-13T02:15:29.854429Z",
+    "responseTime": 967.67,
+    "timestamp": "2026-04-13T02:20:31.928256Z",
     "triageOutput": "traceroute to 203.115.229.88 (203.115.229.88), 15 hops max, 60 byte packets\n 1  * * *\n 2  * * *\n 3  * * *\n 4  * * *\n 5  * * *\n 6  * * *\n 7  * * *\n 8  * * *\n 9  * * *\n10  * * *\n11  * * *\n12  * * *\n13  * * *\n14  * * *\n15  * * *"
   }
 ]
