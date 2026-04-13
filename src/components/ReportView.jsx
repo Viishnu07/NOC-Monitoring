@@ -291,11 +291,11 @@ export default function ReportView({ historyData }) {
       </div>
 
       {reportGroups.length === 0 ? (
-        <div className="glass-card p-12 text-center text-gray-500">Not enough data to calculate periods.</div>
+        <div className="bento-card p-12 text-center text-gray-500">Not enough data to calculate periods.</div>
       ) : (
         <div className="space-y-10 px-4 md:px-0">
           {reportGroups.map((group) => (
-            <div key={group.period} className="glass-card overflow-hidden">
+            <div key={group.period} className="bento-card overflow-hidden">
               <div className="bg-border/50 px-6 py-4 border-b border-border">
                 <h2 className="text-xl font-bold text-white uppercase tracking-wider">
                   Period: {group.period}

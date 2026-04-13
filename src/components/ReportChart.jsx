@@ -57,8 +57,8 @@ export default function ReportChart({ historyData }) {
       {
         label: 'Avg Latency (ms)',
         data: latencyData,
-        borderColor: 'rgb(59, 130, 246)', // Tailwind blue-500
-        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+        borderColor: 'rgb(56, 189, 248)', // Tailwind sky-400 (matches new accent)
+        backgroundColor: 'rgba(56, 189, 248, 0.1)',
         borderWidth: 2,
         tension: 0.4,
         fill: true,
@@ -74,8 +74,8 @@ export default function ReportChart({ historyData }) {
       {
         label: 'Network Uptime (%)',
         data: uptimeData,
-        borderColor: 'rgb(16, 185, 129)', // Tailwind emerald-500
-        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+        borderColor: 'rgb(52, 211, 153)', // Tailwind emerald-400 (matches new success)
+        backgroundColor: 'rgba(52, 211, 153, 0.1)',
         borderWidth: 2,
         tension: 0.4,
         fill: true,
@@ -130,20 +130,20 @@ export default function ReportChart({ historyData }) {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div className="glass-card p-5">
+      <div className="bento-card p-6">
         <div className="mb-4">
-          <h3 className="text-lg font-medium text-white">Network Uptime</h3>
-          <p className="text-xs text-gray-400">System availability over time (%)</p>
+          <h3 className="text-lg font-medium text-white tracking-wide">Network Uptime</h3>
+          <p className="text-xs text-gray-400 mt-1">System availability over time (%)</p>
         </div>
         <div className="h-64 w-full">
           <Line data={uptimeChartData} options={{...chartOptions, scales: {...chartOptions.scales, y: {...chartOptions.scales.y, max: 105}}}} />
         </div>
       </div>
       
-      <div className="glass-card p-5">
+      <div className="bento-card p-6">
         <div className="mb-4">
-          <h3 className="text-lg font-medium text-white">Average Latency</h3>
-          <p className="text-xs text-gray-400">Response time trends across all nodes (ms)</p>
+          <h3 className="text-lg font-medium text-white tracking-wide">Average Latency</h3>
+          <p className="text-xs text-gray-400 mt-1">Response time trends across all nodes (ms)</p>
         </div>
         <div className="h-64 w-full">
           <Line data={latencyChartData} options={chartOptions} />

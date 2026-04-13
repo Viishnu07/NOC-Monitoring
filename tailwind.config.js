@@ -7,17 +7,19 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: '#0B0F19',
-        card: '#161B29',
-        border: '#2A344A',
-        success: '#10B981',
-        danger: '#EF4444',
+        background: '#0a0a0a',   /* Pure/deep dark for background */
+        card: '#171717',         /* Slightly elevated slate */
+        border: '#262626',       /* Soft dark borders */
+        success: '#34d399',      /* Soft mint green */
+        danger: '#fb7185',       /* Soft rose/coral */
+        accent: '#38bdf8',       /* Soft sky blue */
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
       },
       animation: {
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'subtle-bounce': 'bounce 2s infinite',
       }
     },
   },

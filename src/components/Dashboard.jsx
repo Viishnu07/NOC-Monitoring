@@ -60,48 +60,63 @@ export default function Dashboard({ statusData, historyData, loading, lastFetchT
           </div>
         </header>
 
-        {/* Top KPI Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <div className="glass-card p-5 flex items-center justify-between">
-            <div>
-              <p className="text-gray-500 text-sm mb-1 uppercase tracking-wider font-semibold">Total Nodes</p>
-              <h3 className="text-3xl font-bold text-white">{totalNodes}</h3>
+        {/* Bento Board: Top Metrics */}
+        <div className="grid grid-cols-12 gap-5 mb-10">
+          
+          {/* Hero Uptime Bento */}
+          <div className="col-span-12 md:col-span-6 lg:col-span-5 bento-card p-8 flex flex-col justify-between min-h-[200px] border-t-4 border-t-success relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-6 opacity-10">
+              <ShieldCheck size={120} />
             </div>
-            <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500">
-              <Layers size={20} />
+            <div>
+              <p className="text-gray-400 text-sm mb-1 font-medium tracking-wide">SYSTEM UPTIME</p>
+              <h3 className={`text-6xl font-black ${systemStatusColor} tracking-tighter`}>{uptimePercent}%</h3>
+            </div>
+            <div className="flex items-center gap-2 text-sm text-gray-500 mt-4">
+              <span className={`w-3 h-3 rounded-full ${uptimePercent === 100 ? 'bg-success' : 'bg-danger animate-pulse'}`}></span>
+              {onlineNodes} of {totalNodes} services operational
             </div>
           </div>
           
-          <div className="glass-card p-5 flex items-center justify-between">
-            <div>
-              <p className="text-gray-500 text-sm mb-1 uppercase tracking-wider font-semibold">System Uptime</p>
-              <h3 className={`text-3xl font-bold ${systemStatusColor}`}>{uptimePercent}%</h3>
+          {/* Secondary Stacked Bento */}
+          <div className="col-span-12 md:col-span-6 lg:col-span-3 flex flex-col gap-5">
+            <div className="bento-card p-6 flex-1 flex items-center justify-between bg-gradient-to-br from-card to-card/50">
+              <div>
+                <p className="text-gray-400 text-xs mb-1 font-medium tracking-wide">TOTAL NODES</p>
+                <h3 className="text-3xl font-bold text-white tracking-tight">{totalNodes}</h3>
+              </div>
+              <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-accent">
+                <Layers size={24} />
+              </div>
             </div>
-            <div className="w-10 h-10 rounded-full bg-success/10 flex items-center justify-center text-success">
-              <ShieldCheck size={20} />
+            
+            <div className="bento-card p-6 flex-1 flex items-center justify-between bg-gradient-to-br from-card to-card/50">
+              <div>
+                <p className="text-gray-400 text-xs mb-1 font-medium tracking-wide">DEGRADED</p>
+                <h3 className={`text-3xl font-bold tracking-tight ${degradedNodes > 0 ? 'text-yellow-500' : 'text-gray-300'}`}>{degradedNodes}</h3>
+              </div>
+              <div className="w-12 h-12 rounded-2xl bg-yellow-500/10 flex items-center justify-center text-yellow-500 font-bold text-[10px]">
+                 WARN
+              </div>
             </div>
           </div>
           
-          <div className="glass-card p-5 flex items-center justify-between">
-            <div>
-              <p className="text-gray-500 text-sm mb-1 uppercase tracking-wider font-semibold">Degraded Nodes</p>
-              <h3 className={`text-3xl font-bold ${degradedNodes > 0 ? 'text-yellow-500' : 'text-gray-300'}`}>{degradedNodes}</h3>
+          {/* Latency Hero Bento */}
+          <div className="col-span-12 lg:col-span-4 bento-card p-8 flex flex-col justify-between min-h-[200px]">
+            <div className="flex justify-between items-start">
+              <div>
+                <p className="text-gray-400 text-sm mb-1 font-medium tracking-wide">AVG LATENCY</p>
+                <h3 className={`text-5xl font-black tracking-tighter ${avgLatency > 1000 ? 'text-yellow-500' : (avgLatency > 500 ? 'text-orange-400' : 'text-white')}`}>
+                  {avgLatency} <span className="text-2xl text-gray-500 font-medium">ms</span>
+                </h3>
+              </div>
+              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${avgLatency > 500 ? 'bg-orange-500/10 text-orange-400' : 'bg-accent/10 text-accent'}`}>
+                <Activity size={28} />
+              </div>
             </div>
-            <div className="w-10 h-10 rounded-full bg-yellow-500/10 flex items-center justify-center text-yellow-500 text-xs font-bold">
-               SLOW
-            </div>
-          </div>
-          
-          <div className="glass-card p-5 flex items-center justify-between">
-            <div>
-              <p className="text-gray-500 text-sm mb-1 uppercase tracking-wider font-semibold">Avg Latency</p>
-              <h3 className={`text-3xl font-bold ${avgLatency > 1000 ? 'text-yellow-500' : (avgLatency > 500 ? 'text-orange-400' : 'text-white')}`}>
-                {avgLatency} <span className="text-lg text-gray-500">ms</span>
-              </h3>
-            </div>
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${avgLatency > 500 ? 'bg-orange-500/10 text-orange-400' : 'bg-purple-500/10 text-purple-400'}`}>
-              <Activity size={20} />
-            </div>
+            <p className="text-xs text-gray-500 mt-4 leading-relaxed">
+              Global average response time across all active HTTP endpoints.
+            </p>
           </div>
         </div>
 
@@ -116,7 +131,7 @@ export default function Dashboard({ statusData, historyData, loading, lastFetchT
         </div>
         
         {statusData.length === 0 ? (
-          <div className="glass-card p-12 text-center flex flex-col items-center justify-center">
+          <div className="bento-card p-12 text-center flex flex-col items-center justify-center">
             {loading ? (
               <RefreshCw size={32} className="animate-spin text-gray-500 mb-4" />
             ) : (

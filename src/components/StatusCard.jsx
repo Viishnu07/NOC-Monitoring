@@ -5,10 +5,10 @@ export default function StatusCard({ item }) {
   const isUp = item.status === 'UP';
   
   return (
-    <div className={`glass-card p-5 relative overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-xl ${!isUp ? 'border-danger/40 hover:border-danger/80' : (item.responseTime > 1000 ? 'border-yellow-500/40 hover:border-yellow-500/60' : 'border-success/20 hover:border-success/50')}`}>
+    <div className={`bento-card p-6 relative overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${!isUp ? 'border-danger/40 hover:border-danger' : (item.responseTime > 1000 ? 'border-yellow-500/40 hover:border-yellow-500' : 'border-transparent hover:border-border')}`}>
       
-      {/* Background glow effect based on status */}
-      <div className={`absolute -top-10 -right-10 w-32 h-32 rounded-full blur-3xl opacity-20 ${!isUp ? 'bg-danger animate-pulse-slow' : (item.responseTime > 1000 ? 'bg-yellow-500' : 'bg-success')}`}></div>
+      {/* Subtle top indicator line instead of giant blur blob */}
+      <div className={`absolute top-0 left-0 w-full h-1 ${!isUp ? 'bg-danger' : (item.responseTime > 1000 ? 'bg-yellow-500' : 'bg-transparent')}`}></div>
       
       <div className="flex justify-between items-start mb-4">
         <div>
