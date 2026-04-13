@@ -4,62 +4,62 @@
     "url": "http://noc.mytechinfra.com",
     "ip": "142.132.149.97",
     "status": "UP",
-    "responseTime": 473.86,
-    "timestamp": "2026-04-13T01:20:17.471928Z",
+    "responseTime": 448.22,
+    "timestamp": "2026-04-13T01:30:21.190679Z",
     "triageOutput": null
   },
   {
     "name": "Fokas Mail",
     "url": "https://mail.fokasmulia.com.my",
     "ip": "103.240.177.89",
-    "status": "UP",
-    "responseTime": 679.72,
-    "timestamp": "2026-04-13T01:20:17.471928Z",
-    "triageOutput": null
+    "status": "DOWN",
+    "responseTime": 763.02,
+    "timestamp": "2026-04-13T01:30:21.190679Z",
+    "triageOutput": "Start: 2026-04-13T01:30:22+0000\nHOST: runnervm35a4x               Loss%   Snt   Last   Avg  Best  Wrst StDev\n"
   },
   {
     "name": "TechInfra Webmail",
     "url": "https://webmail.mytechinfra.com",
     "ip": "103.240.177.88",
-    "status": "UP",
-    "responseTime": 1003.16,
-    "timestamp": "2026-04-13T01:20:17.471928Z",
-    "triageOutput": null
+    "status": "DOWN",
+    "responseTime": 1010.16,
+    "timestamp": "2026-04-13T01:30:21.190679Z",
+    "triageOutput": "Start: 2026-04-13T01:30:34+0000\nHOST: runnervm35a4x               Loss%   Snt   Last   Avg  Best  Wrst StDev\n"
   },
   {
     "name": "MyEG Webmail",
     "url": "https://webmail.myeg.com.my",
     "ip": "103.240.177.90",
     "status": "UP",
-    "responseTime": 747.51,
-    "timestamp": "2026-04-13T01:20:17.471928Z",
+    "responseTime": 789.25,
+    "timestamp": "2026-04-13T01:30:21.190679Z",
     "triageOutput": null
   },
   {
     "name": "WhatsApp Web",
     "url": "https://web.whatsapp.com",
     "ip": "163.70.132.60",
-    "status": "UP",
-    "responseTime": 99.16,
-    "timestamp": "2026-04-13T01:20:17.471928Z",
-    "triageOutput": null
+    "status": "DOWN",
+    "responseTime": 116.63,
+    "timestamp": "2026-04-13T01:30:21.190679Z",
+    "triageOutput": "Start: 2026-04-13T01:30:45+0000\nHOST: runnervm35a4x               Loss%   Snt   Last   Avg  Best  Wrst StDev\n"
   },
   {
     "name": "Agent Login",
     "url": "http://login2agent.pacific-orient.com",
     "ip": "203.10.20.120",
-    "status": "UP",
-    "responseTime": 1422.84,
-    "timestamp": "2026-04-13T01:20:17.471928Z",
-    "triageOutput": null
+    "status": "DOWN",
+    "responseTime": 0,
+    "timestamp": "2026-04-13T01:30:21.190679Z",
+    "triageOutput": "Start: 2026-04-13T01:31:11+0000\nHOST: runnervm35a4x               Loss%   Snt   Last   Avg  Best  Wrst StDev\n"
   },
   {
     "name": "MyCarInfo",
     "url": "http://www.mycarinfo.com.my",
     "ip": "203.115.229.88",
-    "status": "UP",
-    "responseTime": 928.52,
-    "timestamp": "2026-04-13T01:20:17.471928Z",
-    "triageOutput": null
+    "status": "DOWN",
+    "responseTime": 1015.2,
+    "timestamp": "2026-04-13T01:30:21.190679Z",
+    "triageOutput": "Start: 2026-04-13T01:31:23+0000\nHOST: runnervm35a4x               Loss%   Snt   Last   Avg  Best  Wrst StDev\n"
   }
 ]
