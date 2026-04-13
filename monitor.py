@@ -19,7 +19,7 @@ STATUS_FILE = PUBLIC_DIR / "status.json"
 HISTORY_FILE = PUBLIC_DIR / "history.json"
 
 
-def check_http(url, timeout=5):
+def check_http(url, timeout=15):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/100.0.0.0 Safari/537.36',
         'Cache-Control': 'no-cache',
