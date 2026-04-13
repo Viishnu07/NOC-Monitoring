@@ -3,18 +3,18 @@
     "name": "NOC Home",
     "url": "http://noc.mytechinfra.com",
     "ip": "142.132.149.97",
-    "status": "DOWN",
-    "responseTime": 0,
-    "timestamp": "2026-04-13T00:20:17.948079Z",
-    "triageOutput": "Start: 2026-04-13T00:20:18+0000\nHOST: runnervm35a4x               Loss%   Snt   Last   Avg  Best  Wrst StDev\n"
+    "status": "UP",
+    "responseTime": 576.61,
+    "timestamp": "2026-04-13T00:25:21.098070Z",
+    "triageOutput": null
   },
   {
     "name": "Fokas Mail",
     "url": "https://mail.fokasmulia.com.my",
     "ip": "103.240.177.89",
     "status": "UP",
-    "responseTime": 681.99,
-    "timestamp": "2026-04-13T00:20:17.948079Z",
+    "responseTime": 561.65,
+    "timestamp": "2026-04-13T00:25:21.098070Z",
     "triageOutput": null
   },
   {
@@ -22,8 +22,8 @@
     "url": "https://webmail.mytechinfra.com",
     "ip": "103.240.177.88",
     "status": "UP",
-    "responseTime": 916.93,
-    "timestamp": "2026-04-13T00:20:17.948079Z",
+    "responseTime": 738.88,
+    "timestamp": "2026-04-13T00:25:21.098070Z",
     "triageOutput": null
   },
   {
@@ -31,8 +31,8 @@
     "url": "https://webmail.myeg.com.my",
     "ip": "103.240.177.90",
     "status": "UP",
-    "responseTime": 744.76,
-    "timestamp": "2026-04-13T00:20:17.948079Z",
+    "responseTime": 601.32,
+    "timestamp": "2026-04-13T00:25:21.098070Z",
     "triageOutput": null
   },
   {
@@ -40,8 +40,8 @@
     "url": "https://web.whatsapp.com",
     "ip": "163.70.132.60",
     "status": "UP",
-    "responseTime": 150.63,
-    "timestamp": "2026-04-13T00:20:17.948079Z",
+    "responseTime": 112.57,
+    "timestamp": "2026-04-13T00:25:21.098070Z",
     "triageOutput": null
   },
   {
@@ -49,8 +49,8 @@
     "url": "http://login2agent.pacific-orient.com",
     "ip": "203.10.20.120",
     "status": "UP",
-    "responseTime": 1343.6,
-    "timestamp": "2026-04-13T00:20:17.948079Z",
+    "responseTime": 906.01,
+    "timestamp": "2026-04-13T00:25:21.098070Z",
     "triageOutput": null
   },
   {
@@ -58,8 +58,8 @@
     "url": "http://www.mycarinfo.com.my",
     "ip": "203.115.229.88",
     "status": "UP",
-    "responseTime": 891.53,
-    "timestamp": "2026-04-13T00:20:17.948079Z",
+    "responseTime": 734.52,
+    "timestamp": "2026-04-13T00:25:21.098070Z",
     "triageOutput": null
   }
 ]
