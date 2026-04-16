@@ -1,73 +1,5 @@
 [
   {
-    "timestamp": "2026-04-09T11:15:18.922664Z",
-    "results": [
-      {
-        "name": "NOC Home",
-        "url": "http://noc.mytechinfra.com",
-        "ip": "142.132.149.97",
-        "status": "DOWN",
-        "responseTime": 0,
-        "timestamp": "2026-04-09T11:15:18.922664Z",
-        "triageOutput": "Start: 2026-04-09T11:15:19+0000\nHOST: runnervm727z3               Loss%   Snt   Last   Avg  Best  Wrst StDev\n"
-      },
-      {
-        "name": "Fokas Mail",
-        "url": "https://mail.fokasmulia.com.my",
-        "ip": "103.240.177.89",
-        "status": "UP",
-        "responseTime": 596.4,
-        "timestamp": "2026-04-09T11:15:18.922664Z",
-        "triageOutput": null
-      },
-      {
-        "name": "TechInfra Webmail",
-        "url": "https://webmail.mytechinfra.com",
-        "ip": "103.240.177.88",
-        "status": "UP",
-        "responseTime": 820.19,
-        "timestamp": "2026-04-09T11:15:18.922664Z",
-        "triageOutput": null
-      },
-      {
-        "name": "MyEG Webmail",
-        "url": "https://webmail.myeg.com.my",
-        "ip": "103.240.177.90",
-        "status": "UP",
-        "responseTime": 1012.57,
-        "timestamp": "2026-04-09T11:15:18.922664Z",
-        "triageOutput": null
-      },
-      {
-        "name": "WhatsApp Web",
-        "url": "https://web.whatsapp.com",
-        "ip": "163.70.132.60",
-        "status": "UP",
-        "responseTime": 205.53,
-        "timestamp": "2026-04-09T11:15:18.922664Z",
-        "triageOutput": null
-      },
-      {
-        "name": "Agent Login",
-        "url": "http://login2agent.pacific-orient.com",
-        "ip": "203.10.20.120",
-        "status": "UP",
-        "responseTime": 1207.05,
-        "timestamp": "2026-04-09T11:15:18.922664Z",
-        "triageOutput": null
-      },
-      {
-        "name": "MyCarInfo",
-        "url": "http://www.mycarinfo.com.my",
-        "ip": "203.115.229.88",
-        "status": "UP",
-        "responseTime": 773.33,
-        "timestamp": "2026-04-09T11:15:18.922664Z",
-        "triageOutput": null
-      }
-    ]
-  },
-  {
     "timestamp": "2026-04-09T11:20:18.307185Z",
     "results": [
       {
@@ -129976,6 +129908,67 @@
         "status": "UP",
         "responseTime": 1008.45,
         "timestamp": "2026-04-16T00:30:33.916233Z"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-04-16T00:35:31.780945Z",
+    "results": [
+      {
+        "name": "NOC Home",
+        "url": "http://noc.mytechinfra.com",
+        "ip": "142.132.149.97",
+        "status": "UP",
+        "responseTime": 498.92,
+        "timestamp": "2026-04-16T00:35:31.780945Z"
+      },
+      {
+        "name": "Fokas Mail",
+        "url": "https://mail.fokasmulia.com.my",
+        "ip": "103.240.177.89",
+        "status": "UP",
+        "responseTime": 760.62,
+        "timestamp": "2026-04-16T00:35:31.780945Z"
+      },
+      {
+        "name": "TechInfra Webmail",
+        "url": "https://webmail.mytechinfra.com",
+        "ip": "103.240.177.88",
+        "status": "UP",
+        "responseTime": 1000.05,
+        "timestamp": "2026-04-16T00:35:31.780945Z"
+      },
+      {
+        "name": "MyEG Webmail",
+        "url": "https://webmail.myeg.com.my",
+        "ip": "103.240.177.90",
+        "status": "UP",
+        "responseTime": 726.44,
+        "timestamp": "2026-04-16T00:35:31.780945Z"
+      },
+      {
+        "name": "WhatsApp Web",
+        "url": "https://web.whatsapp.com",
+        "ip": "163.70.132.60",
+        "status": "UP",
+        "responseTime": 147.86,
+        "timestamp": "2026-04-16T00:35:31.780945Z"
+      },
+      {
+        "name": "Agent Login",
+        "url": "https://login2agent.pacific-orient.com",
+        "ip": "203.10.20.120",
+        "status": "UP",
+        "responseTime": 2199.48,
+        "timestamp": "2026-04-16T00:35:31.780945Z"
+      },
+      {
+        "name": "MyCarInfo",
+        "url": "http://www.mycarinfo.com.my",
+        "ip": "203.115.229.88",
+        "status": "UP",
+        "responseTime": 976.77,
+        "timestamp": "2026-04-16T00:35:31.780945Z"
       }
     ]
   }
