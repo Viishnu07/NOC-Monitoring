@@ -3,56 +3,56 @@
     "name": "NOC Home",
     "url": "http://noc.mytechinfra.com",
     "ip": "142.132.149.97",
-    "status": "DOWN",
-    "responseTime": 0,
-    "timestamp": "2026-04-17T13:25:44.357219Z"
+    "status": "UP",
+    "responseTime": 492.34,
+    "timestamp": "2026-04-17T13:31:03.319541Z"
   },
   {
     "name": "Fokas Mail",
     "url": "https://mail.fokasmulia.com.my",
     "ip": "103.240.177.89",
     "status": "UP",
-    "responseTime": 616.76,
-    "timestamp": "2026-04-17T13:25:44.357219Z"
+    "responseTime": 673.25,
+    "timestamp": "2026-04-17T13:31:03.319541Z"
   },
   {
     "name": "TechInfra Webmail",
     "url": "https://webmail.mytechinfra.com",
     "ip": "103.240.177.88",
     "status": "UP",
-    "responseTime": 812.23,
-    "timestamp": "2026-04-17T13:25:44.357219Z"
+    "responseTime": 885.45,
+    "timestamp": "2026-04-17T13:31:03.319541Z"
   },
   {
     "name": "MyEG Webmail",
     "url": "https://webmail.myeg.com.my",
     "ip": "103.240.177.90",
     "status": "UP",
-    "responseTime": 639.23,
-    "timestamp": "2026-04-17T13:25:44.357219Z"
+    "responseTime": 755.25,
+    "timestamp": "2026-04-17T13:31:03.319541Z"
   },
   {
     "name": "WhatsApp Web",
     "url": "https://web.whatsapp.com",
     "ip": "163.70.132.60",
     "status": "UP",
-    "responseTime": 170.95,
-    "timestamp": "2026-04-17T13:25:44.357219Z"
+    "responseTime": 113.81,
+    "timestamp": "2026-04-17T13:31:03.319541Z"
   },
   {
     "name": "Agent Login",
     "url": "https://login2agent.pacific-orient.com",
     "ip": "203.10.20.120",
     "status": "UP",
-    "responseTime": 1679.41,
-    "timestamp": "2026-04-17T13:25:44.357219Z"
+    "responseTime": 2179.56,
+    "timestamp": "2026-04-17T13:31:03.319541Z"
   },
   {
     "name": "MyCarInfo",
     "url": "http://www.mycarinfo.com.my",
     "ip": "203.115.229.88",
     "status": "UP",
-    "responseTime": 808.73,
-    "timestamp": "2026-04-17T13:25:44.357219Z"
+    "responseTime": 1064.87,
+    "timestamp": "2026-04-17T13:31:03.319541Z"
   }
 ]
