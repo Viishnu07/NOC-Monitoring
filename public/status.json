@@ -4,55 +4,55 @@
     "url": "http://noc.mytechinfra.com",
     "ip": "142.132.149.97",
     "status": "UP",
-    "responseTime": 525.03,
-    "timestamp": "2026-04-20T23:35:29.746228Z"
+    "responseTime": 496.08,
+    "timestamp": "2026-04-20T23:40:31.613637Z"
   },
   {
     "name": "Fokas Mail",
     "url": "https://mail.fokasmulia.com.my",
     "ip": "103.240.177.89",
     "status": "UP",
-    "responseTime": 700.5,
-    "timestamp": "2026-04-20T23:35:29.746228Z"
+    "responseTime": 672.52,
+    "timestamp": "2026-04-20T23:40:31.613637Z"
   },
   {
     "name": "TechInfra Webmail",
     "url": "https://webmail.mytechinfra.com",
     "ip": "103.240.177.88",
     "status": "UP",
-    "responseTime": 955.68,
-    "timestamp": "2026-04-20T23:35:29.746228Z"
+    "responseTime": 891.27,
+    "timestamp": "2026-04-20T23:40:31.613637Z"
   },
   {
     "name": "MyEG Webmail",
     "url": "https://webmail.myeg.com.my",
     "ip": "103.240.177.90",
     "status": "UP",
-    "responseTime": 711.1,
-    "timestamp": "2026-04-20T23:35:29.746228Z"
+    "responseTime": 705.5,
+    "timestamp": "2026-04-20T23:40:31.613637Z"
   },
   {
     "name": "WhatsApp Web",
     "url": "https://web.whatsapp.com",
     "ip": "163.70.132.60",
     "status": "UP",
-    "responseTime": 170.08,
-    "timestamp": "2026-04-20T23:35:29.746228Z"
+    "responseTime": 112.04,
+    "timestamp": "2026-04-20T23:40:31.613637Z"
   },
   {
     "name": "Agent Login",
     "url": "https://login2agent.pacific-orient.com",
     "ip": "203.10.20.120",
     "status": "UP",
-    "responseTime": 2186.34,
-    "timestamp": "2026-04-20T23:35:29.746228Z"
+    "responseTime": 1861.62,
+    "timestamp": "2026-04-20T23:40:31.613637Z"
   },
   {
     "name": "MyCarInfo",
     "url": "http://www.mycarinfo.com.my",
     "ip": "203.115.229.88",
     "status": "UP",
-    "responseTime": 916.45,
-    "timestamp": "2026-04-20T23:35:29.746228Z"
+    "responseTime": 946.7,
+    "timestamp": "2026-04-20T23:40:31.613637Z"
   }
 ]
