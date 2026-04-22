@@ -18,7 +18,9 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy built assets from build-stage to Nginx default directory
-COPY --from=build-stage /app/dist /usr/share/nginx/html
+COPY --from=build-stage /app/dist /var/www/html
+# previously                     //usr/share/nginx/html
+# Possibly need to change to     /var/www/html
 
 # Copy monitoring script and urls
 COPY monitor.py .

@@ -70,12 +70,8 @@ function App() {
     try {
       const ts = new Date().getTime();
       
-      // If we are live on GitHub Pages, read the raw files straight from the repo's main branch!
-      // This saves us from having to rebuild the entire React website every 5 minutes.
-      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-      const baseUrl = isLocal 
-        ? '' 
-        : 'https://raw.githubusercontent.com/Viishnu07/NOC-Monitoring/main/public';
+      // Fetch data relative to the current server
+      const baseUrl = '';
 
       const statusRes = await fetch(`${baseUrl}/status.json?t=${ts}`);
       if (statusRes.ok) {
