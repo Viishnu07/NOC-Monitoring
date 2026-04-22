@@ -9,9 +9,12 @@ from urllib.parse import urlparse
 # Suppress InsecureRequestWarning when verify=False is used
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+import os
+
 # Paths
 ROOT_DIR = Path(__file__).parent
-PUBLIC_DIR = ROOT_DIR / "public"
+# In Docker, we can override this to point to the served directory
+PUBLIC_DIR = Path(os.getenv("MONITOR_OUTPUT_DIR", ROOT_DIR / "public"))
 URLS_FILE = ROOT_DIR / "urls.json"
 STATUS_FILE = PUBLIC_DIR / "status.json"
 HISTORY_FILE = PUBLIC_DIR / "history.json"

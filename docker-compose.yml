@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  noc-monitor:
+    build: .
+    container_name: noc-monitor
+    ports:
+      - "8080:80"
+    volumes:
+      - ./data:/app/data
+    restart: always
+    environment:
+      - TZ=Asia/Kuala_Lumpur
