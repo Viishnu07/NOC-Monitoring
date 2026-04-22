@@ -30,8 +30,8 @@ COPY entrypoint.sh .
 # Expose port 80
 EXPOSE 80
 
-# Make entrypoint script executable
-RUN chmod +x entrypoint.sh
+# Fix Windows line endings and make entrypoint script executable
+RUN apt-get update && apt-get install -y dos2unix && dos2unix entrypoint.sh && chmod +x entrypoint.sh
 
 # Run the entrypoint script
 CMD ["./entrypoint.sh"]
