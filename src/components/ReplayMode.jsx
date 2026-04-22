@@ -67,18 +67,18 @@ export default function ReplayMode({ historyData, onReplayFrame, onExit }) {
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 px-4 pb-4 md:px-8 pointer-events-none">
       <div className="max-w-7xl mx-auto pointer-events-auto">
-        <div className="bento-card border-accent/40 border-2 bg-card/95 backdrop-blur-xl p-5 shadow-2xl shadow-black/60">
+        <div className="bento-card border-accent/20 border-2 bg-white/95 backdrop-blur-xl p-5 shadow-xl shadow-slate-200/50">
 
           {/* Header Row */}
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
               {/* DVR blinking indicator */}
-              <div className="flex items-center gap-2 bg-orange-500/20 border border-orange-500/40 px-3 py-1.5 rounded-full">
-                <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse"></span>
-                <span className="text-orange-400 text-xs font-bold tracking-widest uppercase">Replay Mode</span>
+              <div className="flex items-center gap-2 bg-orange-50 border border-orange-200 px-3 py-1.5 rounded-full">
+                <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
+                <span className="text-orange-600 text-xs font-bold tracking-widest uppercase">Replay Mode</span>
               </div>
-              <History size={16} className="text-gray-400" />
-              <span className="text-gray-300 text-sm font-medium">
+              <History size={16} className="text-slate-400" />
+              <span className="text-slate-800 text-sm font-bold">
                 {formatTime(currentTime)}
               </span>
             </div>
@@ -93,14 +93,14 @@ export default function ReplayMode({ historyData, onReplayFrame, onExit }) {
                 <span className="w-2 h-2 rounded-full bg-danger"></span>
                 {downCount} DOWN
               </span>
-              <span className="text-gray-500">
+              <span className="text-slate-500 font-medium">
                 Check {sliderIndex + 1} / {total}
               </span>
             </div>
 
             <button
               onClick={onExit}
-              className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
+              className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900 transition-colors"
               title="Exit Replay Mode"
             >
               <X size={18} />
@@ -113,7 +113,7 @@ export default function ReplayMode({ historyData, onReplayFrame, onExit }) {
             <button
               onClick={() => goTo(sliderIndex - 1)}
               disabled={sliderIndex === 0}
-              className="p-2 rounded-xl bg-white/5 hover:bg-accent/20 text-gray-400 hover:text-accent transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+              className="p-2 rounded-xl bg-slate-100 hover:bg-blue-50 text-slate-500 hover:text-accent transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
             >
               <ChevronLeft size={18} />
             </button>
@@ -121,7 +121,7 @@ export default function ReplayMode({ historyData, onReplayFrame, onExit }) {
             {/* Play / Pause */}
             <button
               onClick={startPlay}
-              className={`p-2 rounded-xl transition-colors ${isPlaying ? 'bg-orange-500/20 text-orange-400 hover:bg-orange-500/30' : 'bg-accent/10 text-accent hover:bg-accent/20'}`}
+              className={`p-2 rounded-xl transition-colors ${isPlaying ? 'bg-orange-50 text-orange-500 hover:bg-orange-100' : 'bg-blue-50 text-accent hover:bg-blue-100'}`}
               title={isPlaying ? 'Pause' : 'Play through history'}
             >
               {isPlaying ? <Pause size={18} /> : <Play size={18} />}
@@ -131,7 +131,7 @@ export default function ReplayMode({ historyData, onReplayFrame, onExit }) {
             <button
               onClick={() => goTo(sliderIndex + 1)}
               disabled={sliderIndex === total - 1}
-              className="p-2 rounded-xl bg-white/5 hover:bg-accent/20 text-gray-400 hover:text-accent transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+              className="p-2 rounded-xl bg-slate-100 hover:bg-blue-50 text-slate-500 hover:text-accent transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
             >
               <ChevronRight size={18} />
             </button>
@@ -140,9 +140,9 @@ export default function ReplayMode({ historyData, onReplayFrame, onExit }) {
             <div className="flex-1 relative group">
               {/* Custom track background */}
               <div className="absolute inset-y-0 left-0 flex items-center w-full px-0 pointer-events-none">
-                <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
+                <div className="w-full h-2 rounded-full bg-slate-200 overflow-hidden">
                   <div
-                    className="h-full rounded-full bg-gradient-to-r from-accent/60 to-accent transition-all duration-150"
+                    className="h-full rounded-full bg-gradient-to-r from-accent/80 to-accent transition-all duration-150"
                     style={{ width: `${progressPercent}%` }}
                   ></div>
                 </div>
@@ -177,15 +177,15 @@ export default function ReplayMode({ historyData, onReplayFrame, onExit }) {
             </div>
 
             {/* Edge timestamps */}
-            <div className="hidden lg:flex flex-col items-end text-[10px] text-gray-500 leading-tight shrink-0">
+            <div className="hidden lg:flex flex-col items-end text-[10px] text-slate-500 leading-tight shrink-0">
               <span>{formatTime(new Date(historyData[total - 1]?.timestamp))}</span>
-              <span className="text-gray-600">Latest</span>
+              <span className="text-slate-400 font-medium">Latest</span>
             </div>
           </div>
 
           {/* Bottom hint */}
-          <p className="text-[11px] text-gray-600 mt-3 text-center">
-            You are viewing a historical snapshot — live data is paused. Drag the slider or press <kbd className="bg-white/10 text-gray-400 px-1 rounded">←</kbd> <kbd className="bg-white/10 text-gray-400 px-1 rounded">→</kbd> to scrub through time.
+          <p className="text-[11px] text-slate-500 mt-3 text-center font-medium">
+            You are viewing a historical snapshot — live data is paused. Drag the slider or press <kbd className="bg-slate-100 border border-slate-200 text-slate-600 px-1.5 py-0.5 rounded shadow-sm">←</kbd> <kbd className="bg-slate-100 border border-slate-200 text-slate-600 px-1.5 py-0.5 rounded shadow-sm">→</kbd> to scrub through time.
           </p>
         </div>
       </div>

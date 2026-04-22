@@ -7,12 +7,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: '#0a0a0a',   /* Pure/deep dark for background */
-        card: '#171717',         /* Slightly elevated slate */
-        border: '#262626',       /* Soft dark borders */
-        success: '#34d399',      /* Soft mint green */
-        danger: '#fb7185',       /* Soft rose/coral */
-        accent: '#38bdf8',       /* Soft sky blue */
+        background: '#f8fafc',   /* Slate 50 for light background */
+        card: '#ffffff',         /* Pure white cards */
+        border: '#e2e8f0',       /* Slate 200 for subtle borders */
+        success: '#10b981',      /* Emerald 500 */
+        danger: '#ef4444',       /* Red 500 */
+        accent: '#3b82f6',       /* Blue 500 */
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],

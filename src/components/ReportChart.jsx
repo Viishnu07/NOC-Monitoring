@@ -25,7 +25,7 @@ ChartJS.register(
 
 export default function ReportChart({ historyData }) {
   if (!historyData || historyData.length === 0) {
-    return <div className="p-8 text-center text-gray-500">No historical data available yet.</div>;
+    return <div className="p-8 text-center text-slate-500 bg-white rounded-xl border border-slate-200">No historical data available yet.</div>;
   }
 
   // Optimize data: if we have lots of points, maybe downsample in production, but we'll show them.
@@ -57,8 +57,8 @@ export default function ReportChart({ historyData }) {
       {
         label: 'Avg Latency (ms)',
         data: latencyData,
-        borderColor: 'rgb(56, 189, 248)', // Tailwind sky-400 (matches new accent)
-        backgroundColor: 'rgba(56, 189, 248, 0.1)',
+        borderColor: '#3b82f6', // Tailwind blue-500
+        backgroundColor: 'rgba(59, 130, 246, 0.1)',
         borderWidth: 2,
         tension: 0.4,
         fill: true,
@@ -74,8 +74,8 @@ export default function ReportChart({ historyData }) {
       {
         label: 'Network Uptime (%)',
         data: uptimeData,
-        borderColor: 'rgb(52, 211, 153)', // Tailwind emerald-400 (matches new success)
-        backgroundColor: 'rgba(52, 211, 153, 0.1)',
+        borderColor: '#10b981', // Tailwind emerald-500
+        backgroundColor: 'rgba(16, 185, 129, 0.1)',
         borderWidth: 2,
         tension: 0.4,
         fill: true,
@@ -97,32 +97,35 @@ export default function ReportChart({ historyData }) {
         display: false
       },
       tooltip: {
-        backgroundColor: 'rgba(15, 23, 42, 0.9)',
-        titleColor: '#fff',
-        bodyColor: '#cbd5e1',
-        borderColor: '#334155',
+        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+        titleColor: '#0f172a',
+        bodyColor: '#334155',
+        borderColor: '#e2e8f0',
         borderWidth: 1,
+        padding: 10,
+        boxPadding: 4,
+        usePointStyle: true,
       }
     },
     scales: {
       x: {
         grid: {
-          color: 'rgba(51, 65, 85, 0.3)',
+          color: '#f1f5f9', // slate-100
           drawBorder: false,
         },
         ticks: {
-          color: '#64748b',
+          color: '#64748b', // slate-500
           maxTicksLimit: 8
         }
       },
       y: {
         beginAtZero: true,
         grid: {
-          color: 'rgba(51, 65, 85, 0.3)',
+          color: '#f1f5f9', // slate-100
           drawBorder: false,
         },
         ticks: {
-          color: '#64748b'
+          color: '#64748b' // slate-500
         }
       }
     }
@@ -130,20 +133,20 @@ export default function ReportChart({ historyData }) {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div className="bento-card p-6">
+      <div className="bg-white border border-slate-200 rounded-[1.5rem] p-6 shadow-sm">
         <div className="mb-4">
-          <h3 className="text-lg font-medium text-white tracking-wide">Network Uptime</h3>
-          <p className="text-xs text-gray-400 mt-1">System availability over time (%)</p>
+          <h3 className="text-lg font-bold text-slate-800 tracking-tight">Network Uptime</h3>
+          <p className="text-xs text-slate-500 mt-1">System availability over time (%)</p>
         </div>
         <div className="h-64 w-full">
           <Line data={uptimeChartData} options={{...chartOptions, scales: {...chartOptions.scales, y: {...chartOptions.scales.y, max: 105}}}} />
         </div>
       </div>
       
-      <div className="bento-card p-6">
+      <div className="bg-white border border-slate-200 rounded-[1.5rem] p-6 shadow-sm">
         <div className="mb-4">
-          <h3 className="text-lg font-medium text-white tracking-wide">Average Latency</h3>
-          <p className="text-xs text-gray-400 mt-1">Response time trends across all nodes (ms)</p>
+          <h3 className="text-lg font-bold text-slate-800 tracking-tight">Average Latency</h3>
+          <p className="text-xs text-slate-500 mt-1">Response time trends across all nodes (ms)</p>
         </div>
         <div className="h-64 w-full">
           <Line data={latencyChartData} options={chartOptions} />

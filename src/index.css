@@ -6,30 +6,30 @@
 
 @layer base {
   body {
-    @apply bg-background text-gray-200 antialiased font-sans;
+    @apply bg-background text-slate-800 antialiased font-sans;
   }
 }
 
 .glass-card {
-  @apply bg-card bg-opacity-70 backdrop-blur-md rounded-xl border border-border shadow-lg;
+  @apply bg-white/90 backdrop-blur-md rounded-xl border border-slate-200 shadow-sm;
 }
 
 .bento-card {
-  @apply bg-card rounded-[2rem] border border-border shadow-md overflow-hidden relative transition-all duration-300;
+  @apply bg-white rounded-[1.5rem] border border-slate-200 shadow-sm overflow-hidden relative transition-all duration-300 hover:shadow-md hover:border-slate-300;
 }
 
-/* Custom scrollbar for dark mode */
+/* Custom scrollbar for light mode */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #0B0F19; 
+  background: #f1f5f9; 
 }
 ::-webkit-scrollbar-thumb {
-  background: #2A344A; 
+  background: #cbd5e1; 
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3B4863; 
+  background: #94a3b8; 
 }
