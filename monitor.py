@@ -2,6 +2,8 @@ import json
 import time
 import requests
 import urllib3
+import os
+import concurrent.futures
 from datetime import datetime
 from pathlib import Path
 from urllib.parse import urlparse
@@ -96,6 +98,35 @@ def check_http(url, timeout=15, bypass_status_check=False):
         return False, 0, "Request Failed"
 
 
+def check_target(target, current_time):
+    """Helper function to run a single target check (used in ThreadPoolExecutor)."""
+    name = target.get('name')
+    url = target.get('url')
+    ip = target.get('ip')
+    bypass = target.get('bypass_status_check', False)
+
+    if url:
+        is_up, rtt, reason = check_http(url, timeout=15, bypass_status_check=bypass)
+    else:
+        is_up, rtt, reason = False, 0, "No URL Defined"
+
+    return {
+        "name": name,
+        "url": url,
+        "ip": ip,
+        "status": "UP" if is_up else "DOWN",
+        "errorType": reason,
+        "responseTime": round(rtt, 2),
+        "timestamp": current_time
+    }
+
+def atomic_write_json(filepath, data):
+    """Writes data to a temp file first, then atomically replaces the target file."""
+    temp_file = filepath.with_suffix('.tmp')
+    with open(temp_file, 'w') as f:
+        json.dump(data, f, indent=2)
+    os.replace(temp_file, filepath)
+
 
 def main():
     PUBLIC_DIR.mkdir(exist_ok=True)
@@ -109,32 +140,16 @@ def main():
         print(f"Error reading {URLS_FILE}: {e}")
         return
 
-    results = []
     current_time = datetime.utcnow().isoformat() + "Z"
 
-    for target in targets:
-        name = target.get('name')
-        url = target.get('url')
-        ip = target.get('ip')
-        bypass = target.get('bypass_status_check', False)
+    # 1. Concurrency: Check all URLs in parallel
+    results = []
+    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+        # executor.map guarantees the results are returned in the same order as the input 'targets' list
+        results = list(executor.map(lambda t: check_target(t, current_time), targets))
 
-        if url:
-            is_up, rtt, reason = check_http(url, bypass_status_check=bypass)
-        else:
-            is_up, rtt, reason = False, 0, "No URL Defined"
-
-        results.append({
-            "name": name,
-            "url": url,
-            "ip": ip,
-            "status": "UP" if is_up else "DOWN",
-            "errorType": reason,
-            "responseTime": round(rtt, 2),
-            "timestamp": current_time
-        })
-
-    with open(STATUS_FILE, 'w') as f:
-        json.dump(results, f, indent=2)
+    # 2. Atomic Writes: Swap files instantly at the OS level
+    atomic_write_json(STATUS_FILE, results)
 
     history = []
     if HISTORY_FILE.exists():
@@ -154,8 +169,8 @@ def main():
     if len(history) > max_history:
         history = history[-max_history:]
 
-    with open(HISTORY_FILE, 'w') as f:
-        json.dump(history, f, indent=2)
+    # Atomic write for history as well
+    atomic_write_json(HISTORY_FILE, history)
 
     print("Checks complete. Exiting...")
 
