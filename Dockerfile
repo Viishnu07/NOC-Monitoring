@@ -1,5 +1,5 @@
 # Stage 1: Build the React application
-FROM node:20-alpine as build-stage
+FROM node:20-alpine AS build-stage
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
@@ -10,28 +10,27 @@ RUN npm run build
 FROM python:3.11-slim
 WORKDIR /app
 
-# Install Nginx
-RUN apt-get update && apt-get install -y nginx && rm -rf /var/lib/apt/lists/*
+# Install Nginx and dos2unix (to handle Windows line endings in entrypoint.sh)
+RUN apt-get update \
+    && apt-get install -y nginx dos2unix \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy built assets from build-stage to Nginx default directory
+# Copy built React assets → Nginx serve directory
 COPY --from=build-stage /app/dist /var/www/html
-# previously                     //usr/share/nginx/html
-# Possibly need to change to     /var/www/html
 
-# Copy monitoring script and urls
+# Copy monitoring script, URL list, and entrypoint
 COPY monitor.py .
 COPY urls.json .
 COPY entrypoint.sh .
 
-# Expose port 80
+# Fix Windows CRLF line endings and make script executable
+RUN dos2unix entrypoint.sh && chmod +x entrypoint.sh
+
+# Expose HTTP port
 EXPOSE 80
 
-# Fix Windows line endings and make entrypoint script executable
-RUN apt-get update && apt-get install -y dos2unix && dos2unix entrypoint.sh && chmod +x entrypoint.sh
-
-# Run the entrypoint script
 CMD ["./entrypoint.sh"]

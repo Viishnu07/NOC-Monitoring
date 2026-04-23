@@ -70,10 +70,10 @@ function App() {
     try {
       const ts = new Date().getTime();
       
-      // Fetch data relative to the current server
-      const baseUrl = '';
+      // Fetch data relative to the Vite base URL
+      const baseUrl = import.meta.env.BASE_URL;
 
-      const statusRes = await fetch(`${baseUrl}/status.json?t=${ts}`);
+      const statusRes = await fetch(`${baseUrl}status.json?t=${ts}`);
       if (statusRes.ok) {
         const data = await statusRes.json();
         
@@ -108,7 +108,7 @@ function App() {
         setStatusData(data);
       }
       
-      const historyRes = await fetch(`${baseUrl}/history.json?t=${ts}`);
+      const historyRes = await fetch(`${baseUrl}history.json?t=${ts}`);
       if (historyRes.ok) {
         const hData = await historyRes.json();
         setHistoryData(hData);
