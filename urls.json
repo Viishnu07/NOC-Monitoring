@@ -22,7 +22,8 @@
   {
     "name": "WhatsApp Web",
     "url": "https://web.whatsapp.com",
-    "ip": "163.70.132.60"
+    "ip": "163.70.132.60",
+    "bypass_status_check": true
   },
   {
     "name": "Agent Login",

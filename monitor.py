@@ -20,18 +20,28 @@ STATUS_FILE = PUBLIC_DIR / "status.json"
 HISTORY_FILE = PUBLIC_DIR / "history.json"
 
 
-def check_http(url, timeout=15):
+def check_http(url, timeout=15, bypass_status_check=False):
+    """
+    Checks if a URL is accessible from the monitoring server's network.
+
+    bypass_status_check: Set True for sites known to block automated HTTP probes
+    (e.g. WhatsApp Web, Google, Facebook) via TLS fingerprinting / bot-detection.
+    In bypass mode, the site is considered UP if we get ANY HTTP response at all
+    (even 4xx), and DOWN only on a network-level failure (Timeout, Connection Error).
+    This accurately tests reachability without being fooled by anti-bot responses.
+    """
     headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/100.0.0.0 Safari/537.36',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.9',
         'Cache-Control': 'no-cache',
-        'Pragma': 'no-cache'
+        'Pragma': 'no-cache',
     }
 
     # Common keywords returned by maintenance or blocked pages
     ERROR_KEYWORDS = ["maintenance", "service unavailable", "access denied", "under construction", "oops!"]
 
     try:
-        # We use a session to handle retries and keep-alive better
         session = requests.Session()
         adapter = requests.adapters.HTTPAdapter(max_retries=1)
         session.mount("http://", adapter)
@@ -40,10 +50,19 @@ def check_http(url, timeout=15):
         response = session.get(url, timeout=timeout, headers=headers, verify=False, allow_redirects=True)
         response_time = response.elapsed.total_seconds() * 1000
 
+        # ── Bypass mode ──────────────────────────────────────────────────────
+        # For sites that use TLS fingerprinting / bot-detection (e.g. WhatsApp Web),
+        # any HTTP response means the server is reachable and the site is UP.
+        # We only fail on a network-level error (connection refused, timeout, DNS).
+        if bypass_status_check:
+            return True, response_time, f"Reachable (HTTP {response.status_code})"
+
+        # ── Normal mode ──────────────────────────────────────────────────────
+
         # 1. Check Status Code
         # Goal: "Can my users actually access and use this site right now?"
-        # UP:   2xx (success), 3xx (redirect followed), 401/407 (auth-gated — server is live, users just need credentials)
-        # DOWN: 400 (bad request), 403 (forbidden — users are blocked), 404 (not found), 5xx (server error)
+        # UP:   2xx (success), 3xx (redirect followed), 401/407 (auth-gated — server is live)
+        # DOWN: 400 (bad request), 403 (forbidden), 404 (not found), 5xx (server error)
         if response.status_code in (401, 407):
             return True, response_time, "Auth Required"
         if response.status_code >= 400:
@@ -61,11 +80,9 @@ def check_http(url, timeout=15):
             return False, response_time, "Maintenance Page"
 
         # 4. Redirect Detection (Detect if hijacked by ISP domain)
-        # If the final URL's domain doesn't match the original, it might be an ISP "Help" page
         original_domain = urlparse(url).netloc
         final_domain = urlparse(response.url).netloc
         if original_domain and final_domain and original_domain != final_domain:
-            # Common ISP splash keywords in domain
             if any(k in final_domain.lower() for k in ["search", "guide", "dns", "help"]):
                 return False, response_time, "ISP Redirect"
 
@@ -99,12 +116,11 @@ def main():
         name = target.get('name')
         url = target.get('url')
         ip = target.get('ip')
+        bypass = target.get('bypass_status_check', False)
 
         if url:
-            # Strictly check via HTTP/HTTPS only.
-            is_up, rtt, reason = check_http(url)
+            is_up, rtt, reason = check_http(url, bypass_status_check=bypass)
         else:
-            # No URL defined — cannot check, mark as DOWN.
             is_up, rtt, reason = False, 0, "No URL Defined"
 
         results.append({
