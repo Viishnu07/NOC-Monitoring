@@ -69,15 +69,12 @@ function App() {
     setLoading(true);
     try {
       const ts = new Date().getTime();
-      
-      // Fetch data relative to the Vite base URL
       const baseUrl = import.meta.env.BASE_URL;
 
       const statusRes = await fetch(`${baseUrl}status.json?t=${ts}`);
       if (statusRes.ok) {
         const data = await statusRes.json();
         
-        // Check for State Changes
         if (previousStatusRef.current) {
            const oldStatus = previousStatusRef.current;
            const newDowns = data.filter(n => n.status === 'DOWN').filter(n => {
@@ -101,7 +98,7 @@ function App() {
                setAlertType('up');
                playChime();
                triggerPushNotification("✅ SYSTEM RECOVERED", msg);
-               setTimeout(() => setCriticalAlert(null), 10000); // clear recovery msg after 10s
+               setTimeout(() => setCriticalAlert(null), 10000);
            }
         }
         previousStatusRef.current = data;
@@ -129,14 +126,14 @@ function App() {
   }, []);
 
   return (
-    <div className={`min-h-screen relative transition-colors duration-500 bg-background selection:bg-accent/30`}>
+    <div className="min-h-screen relative transition-colors duration-500 bg-background selection:bg-accent/30">
       
-      {/* Professional Alert Banner */}
+      {/* Alert Banner */}
       {criticalAlert && (
         <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] w-full max-w-lg px-4 transition-all duration-300 animate-in slide-in-from-top-4">
-          <div className={`flex items-center justify-between p-4 rounded-xl shadow-lg border ${alertType === 'down' ? 'bg-white border-red-200 shadow-red-100/50' : 'bg-white border-emerald-200 shadow-emerald-100/50'}`}>
+          <div className={`flex items-center justify-between p-4 rounded-xl shadow-2xl border ${alertType === 'down' ? 'bg-slate-800 border-red-700 shadow-red-900/40' : 'bg-slate-800 border-emerald-700 shadow-emerald-900/40'}`}>
              <div className="flex items-center gap-3">
-                <span className={`flex items-center justify-center w-10 h-10 rounded-full ${alertType === 'down' ? 'bg-red-100 text-red-600' : 'bg-emerald-100 text-emerald-600'}`}>
+                <span className={`flex items-center justify-center w-10 h-10 rounded-full ${alertType === 'down' ? 'bg-red-900/50 text-red-400' : 'bg-emerald-900/50 text-emerald-400'}`}>
                   {alertType === 'down' ? (
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
                   ) : (
@@ -144,15 +141,15 @@ function App() {
                   )}
                 </span>
                 <div>
-                  <h3 className={`text-sm font-bold ${alertType === 'down' ? 'text-red-700' : 'text-emerald-700'}`}>
+                  <h3 className={`text-sm font-bold ${alertType === 'down' ? 'text-red-400' : 'text-emerald-400'}`}>
                     {alertType === 'down' ? 'Outage Detected' : 'System Recovered'}
                   </h3>
-                  <p className="text-slate-600 text-sm font-medium">{criticalAlert}</p>
+                  <p className="text-slate-300 text-sm font-medium">{criticalAlert}</p>
                 </div>
              </div>
              <button 
                onClick={() => setCriticalAlert(null)} 
-               className="p-2 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors"
+               className="p-2 text-slate-500 hover:text-slate-200 rounded-lg hover:bg-slate-700/50 transition-colors"
                aria-label="Dismiss"
              >
                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -161,17 +158,17 @@ function App() {
         </div>
       )}
 
-      {/* Navigation */}
+      {/* Desktop Navigation pill */}
       <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50 glass-card px-2 py-2 rounded-full hidden md:flex items-center gap-2 border border-border shadow-2xl">
         <button 
           onClick={() => setCurrentView('dashboard')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${currentView === 'dashboard' ? 'bg-accent/10 text-accent font-semibold' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'}`}
+          className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${currentView === 'dashboard' ? 'bg-accent/20 text-accent font-semibold' : 'text-slate-400 hover:text-slate-100 hover:bg-slate-700/50'}`}
         >
           <LayoutDashboard size={16} /> Dashboard
         </button>
         <button 
           onClick={() => setCurrentView('report')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${currentView === 'report' ? 'bg-accent/10 text-accent font-semibold' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'}`}
+          className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${currentView === 'report' ? 'bg-accent/20 text-accent font-semibold' : 'text-slate-400 hover:text-slate-100 hover:bg-slate-700/50'}`}
         >
           <FileText size={16} /> Reporting Suite
         </button>
@@ -181,13 +178,13 @@ function App() {
       <nav className="md:hidden flex border-b border-border bg-card">
          <button 
           onClick={() => setCurrentView('dashboard')}
-          className={`flex-1 py-4 flex justify-center items-center gap-2 text-sm font-medium ${currentView === 'dashboard' ? 'text-accent border-b-2 border-accent' : 'text-slate-500'}`}
+          className={`flex-1 py-4 flex justify-center items-center gap-2 text-sm font-medium ${currentView === 'dashboard' ? 'text-accent border-b-2 border-accent' : 'text-slate-400'}`}
         >
           <LayoutDashboard size={16} /> Dashboard
         </button>
         <button 
           onClick={() => setCurrentView('report')}
-         className={`flex-1 py-4 flex justify-center items-center gap-2 text-sm font-medium ${currentView === 'report' ? 'text-accent border-b-2 border-accent' : 'text-slate-500'}`}
+         className={`flex-1 py-4 flex justify-center items-center gap-2 text-sm font-medium ${currentView === 'report' ? 'text-accent border-b-2 border-accent' : 'text-slate-400'}`}
         >
           <FileText size={16} /> Reports
         </button>

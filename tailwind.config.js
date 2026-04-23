@@ -7,19 +7,19 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: '#f8fafc',   /* Slate 50 for light background */
-        card: '#ffffff',         /* Pure white cards */
-        border: '#e2e8f0',       /* Slate 200 for subtle borders */
-        success: '#10b981',      /* Emerald 500 */
-        danger: '#ef4444',       /* Red 500 */
-        accent: '#3b82f6',       /* Blue 500 */
+        background: '#0f172a',   /* Slate-900 — dark page background */
+        card:       '#1e293b',   /* Slate-800 — card surfaces */
+        border:     '#334155',   /* Slate-700 — subtle borders */
+        success:    '#10b981',   /* Emerald-500 */
+        danger:     '#ef4444',   /* Red-500 */
+        accent:     '#3b82f6',   /* Blue-500 */
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
       },
       animation: {
-        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'subtle-bounce': 'bounce 2s infinite',
+        'pulse-slow':      'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'subtle-bounce':   'bounce 2s infinite',
       }
     },
   },

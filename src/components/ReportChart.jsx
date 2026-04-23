@@ -25,10 +25,13 @@ ChartJS.register(
 
 export default function ReportChart({ historyData }) {
   if (!historyData || historyData.length === 0) {
-    return <div className="p-8 text-center text-slate-500 bg-white rounded-xl border border-slate-200">No historical data available yet.</div>;
+    return (
+      <div className="p-8 text-center text-slate-400 bg-card rounded-[1.5rem] border border-border">
+        No historical data available yet.
+      </div>
+    );
   }
 
-  // Optimize data: if we have lots of points, maybe downsample in production, but we'll show them.
   const labels = historyData.map(entry => {
     const d = new Date(entry.timestamp);
     return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -57,8 +60,8 @@ export default function ReportChart({ historyData }) {
       {
         label: 'Avg Latency (ms)',
         data: latencyData,
-        borderColor: '#3b82f6', // Tailwind blue-500
-        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+        borderColor: '#3b82f6',
+        backgroundColor: 'rgba(59, 130, 246, 0.08)',
         borderWidth: 2,
         tension: 0.4,
         fill: true,
@@ -74,8 +77,8 @@ export default function ReportChart({ historyData }) {
       {
         label: 'Network Uptime (%)',
         data: uptimeData,
-        borderColor: '#10b981', // Tailwind emerald-500
-        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+        borderColor: '#10b981',
+        backgroundColor: 'rgba(16, 185, 129, 0.08)',
         borderWidth: 2,
         tension: 0.4,
         fill: true,
@@ -85,6 +88,7 @@ export default function ReportChart({ historyData }) {
     ]
   };
 
+  // Dark-mode chart options
   const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -93,14 +97,12 @@ export default function ReportChart({ historyData }) {
       intersect: false,
     },
     plugins: {
-      legend: {
-        display: false
-      },
+      legend: { display: false },
       tooltip: {
-        backgroundColor: 'rgba(255, 255, 255, 0.95)',
-        titleColor: '#0f172a',
-        bodyColor: '#334155',
-        borderColor: '#e2e8f0',
+        backgroundColor: '#1e293b',   // card
+        titleColor: '#f1f5f9',        // slate-100
+        bodyColor: '#94a3b8',         // slate-400
+        borderColor: '#334155',       // border
         borderWidth: 1,
         padding: 10,
         boxPadding: 4,
@@ -109,33 +111,22 @@ export default function ReportChart({ historyData }) {
     },
     scales: {
       x: {
-        grid: {
-          color: '#f1f5f9', // slate-100
-          drawBorder: false,
-        },
-        ticks: {
-          color: '#64748b', // slate-500
-          maxTicksLimit: 8
-        }
+        grid: { color: '#1e293b', drawBorder: false },
+        ticks: { color: '#475569', maxTicksLimit: 8 }  // slate-600
       },
       y: {
         beginAtZero: true,
-        grid: {
-          color: '#f1f5f9', // slate-100
-          drawBorder: false,
-        },
-        ticks: {
-          color: '#64748b' // slate-500
-        }
+        grid: { color: '#1e2d40', drawBorder: false },
+        ticks: { color: '#475569' }
       }
     }
   };
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div className="bg-white border border-slate-200 rounded-[1.5rem] p-6 shadow-sm">
+      <div className="bg-card border border-border rounded-[1.5rem] p-6 shadow-sm">
         <div className="mb-4">
-          <h3 className="text-lg font-bold text-slate-800 tracking-tight">Network Uptime</h3>
+          <h3 className="text-lg font-bold text-slate-100 tracking-tight">Network Uptime</h3>
           <p className="text-xs text-slate-500 mt-1">System availability over time (%)</p>
         </div>
         <div className="h-64 w-full">
@@ -143,9 +134,9 @@ export default function ReportChart({ historyData }) {
         </div>
       </div>
       
-      <div className="bg-white border border-slate-200 rounded-[1.5rem] p-6 shadow-sm">
+      <div className="bg-card border border-border rounded-[1.5rem] p-6 shadow-sm">
         <div className="mb-4">
-          <h3 className="text-lg font-bold text-slate-800 tracking-tight">Average Latency</h3>
+          <h3 className="text-lg font-bold text-slate-100 tracking-tight">Average Latency</h3>
           <p className="text-xs text-slate-500 mt-1">Response time trends across all nodes (ms)</p>
         </div>
         <div className="h-64 w-full">

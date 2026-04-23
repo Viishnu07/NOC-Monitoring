@@ -133,8 +133,8 @@ def main():
         "results": results
     })
 
-    # Keep last 2000 checks (approx 1 week at 5 min intervals) for history charts
-    max_history = 2000
+    # Keep last 9000 checks (~31 days at 5-min intervals) — enough for full monthly reports
+    max_history = 9000
     if len(history) > max_history:
         history = history[-max_history:]
 

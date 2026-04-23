@@ -6,30 +6,30 @@
 
 @layer base {
   body {
-    @apply bg-background text-slate-800 antialiased font-sans;
+    @apply bg-background text-slate-100 antialiased font-sans;
   }
 }
 
 .glass-card {
-  @apply bg-white/90 backdrop-blur-md rounded-xl border border-slate-200 shadow-sm;
+  @apply bg-card/80 backdrop-blur-md rounded-xl border border-border shadow-sm;
 }
 
 .bento-card {
-  @apply bg-white rounded-[1.5rem] border border-slate-200 shadow-sm overflow-hidden relative transition-all duration-300 hover:shadow-md hover:border-slate-300;
+  @apply bg-card rounded-[1.5rem] border border-border shadow-sm overflow-hidden relative transition-all duration-300 hover:shadow-lg hover:border-slate-600;
 }
 
-/* Custom scrollbar for light mode */
+/* Custom scrollbar for dark mode */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f5f9; 
+  background: #0f172a;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1; 
+  background: #334155;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8; 
+  background: #475569;
 }
