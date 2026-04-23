@@ -121,11 +121,13 @@ def check_target(target, current_time):
     }
 
 def atomic_write_json(filepath, data):
-    """Writes data to a temp file first, then atomically replaces the target file."""
-    temp_file = filepath.with_suffix('.tmp')
+    """Writes data to a temp file first, then atomically replaces the target file.
+    Resolves symlinks so the real target file is updated, not the symlink itself."""
+    real_path = filepath.resolve()
+    temp_file = real_path.with_suffix('.tmp')
     with open(temp_file, 'w') as f:
         json.dump(data, f, indent=2)
-    os.replace(temp_file, filepath)
+    os.replace(temp_file, real_path)
 
 
 def main():
