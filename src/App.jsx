@@ -14,25 +14,6 @@ function App() {
   const [criticalAlert, setCriticalAlert] = useState(null);
   const [alertType, setAlertType] = useState(''); // 'down' or 'up'
 
-  const playSiren = () => {
-    try {
-      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      for (let i = 0; i < 6; i++) {
-        const osc = audioCtx.createOscillator();
-        const gainNode = audioCtx.createGain();
-        osc.connect(gainNode);
-        gainNode.connect(audioCtx.destination);
-        osc.type = 'square';
-        osc.frequency.setValueAtTime(i % 2 === 0 ? 880 : 660, audioCtx.currentTime + i * 0.4);
-        gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime + i * 0.4);
-        osc.start(audioCtx.currentTime + i * 0.4);
-        osc.stop(audioCtx.currentTime + (i + 1) * 0.4);
-      }
-    } catch (e) {
-      console.warn("Audio blocked by browser policy. Please interact with the page first.");
-    }
-  };
-
   const triggerPushNotification = (title, body) => {
     if (!("Notification" in window)) return;
     if (Notification.permission === "granted") {
@@ -43,25 +24,6 @@ function App() {
           new Notification(title, { body });
         }
       });
-    }
-  };
-
-  const playChime = () => {
-    try {
-      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const osc = audioCtx.createOscillator();
-      const gainNode = audioCtx.createGain();
-      osc.connect(gainNode);
-      gainNode.connect(audioCtx.destination);
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
-      osc.frequency.exponentialRampToValueAtTime(1046.50, audioCtx.currentTime + 0.5); // C6
-      gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1);
-      osc.start(audioCtx.currentTime);
-      osc.stop(audioCtx.currentTime + 1);
-    } catch (e) {
-      console.warn("Audio blocked");
     }
   };
 
@@ -90,13 +52,11 @@ function App() {
                const msg = `${newDowns.map(n => n.name).join(', ')} OFFLINE`;
                setCriticalAlert(msg);
                setAlertType('down');
-               playSiren();
                triggerPushNotification("🚨 CRITICAL NOC ALERT", msg);
            } else if (newUps.length > 0) {
                const msg = `${newUps.map(n => n.name).join(', ')} BACK ONLINE`;
                setCriticalAlert(msg);
                setAlertType('up');
-               playChime();
                triggerPushNotification("✅ SYSTEM RECOVERED", msg);
                setTimeout(() => setCriticalAlert(null), 10000);
            }
